@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title></title>
+        <title>{% block super_title %}H₂O Really? | {% block title %}{% endblock %}{% endblock %}</title>
         <meta charset='utf-8'> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
@@ -53,6 +53,9 @@
                 <a href="#about">Add measurements</a></li>
               <li{% if name == "kits" %} class="active"{% endif %}>
                 <a href="#contact">Get testing kits</a></li>
+              {% if request.user.is_staff %}
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+              {% endif %}
             </ul>
             {% endwith %}
           </div><!--/.nav-collapse -->
