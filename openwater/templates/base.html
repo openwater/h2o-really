@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+        <meta charset='utf-8'> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <style type="text/css">
+          body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+          }
+          .sidebar-nav {
+            padding: 9px 0;
+          }
+
+          @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+              float: none;
+              padding-left: 5px;
+              padding-right: 5px;
+            }
+          }
+        </style>
+        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+	</head>
+	<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">{{ site }}</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              {% if request.user.is_authenticated %}
+              Logged in as <a href="#" class="navbar-link">{{ request.user }}</a>
+              {% else %}
+              <a href="#">Log in</a> | <a href="#">Sign up</a>
+              {% endif %}
+            </p>
+            {% with request.resolver_match.url_name as name %}
+            <ul class="nav">
+              <li{% if name == "home" %} class="active"{% endif %}>
+                <a href="#">Home</a></li>
+              <li{% if name == "add-measurements" %} class="active"{% endif %}>
+                <a href="#about">Add measurements</a></li>
+              <li{% if name == "kits" %} class="active"{% endif %}>
+                <a href="#contact">Get testing kits</a></li>
+            </ul>
+            {% endwith %}
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            {% with request.resolver_match.url_name as name %}
+            <ul class="nav nav-list">
+              <li{% if name == "home" %} class="active"{% endif %}>
+                <a href="#">Home</a></li>
+              <li class="nav-header">Contribute</li>
+              <li{% if name == "add-measurements" %} class="active"{% endif %}>
+                <a href="#">Add measurements</a></li>
+              <li{% if name == "write-code" %} class="active"{% endif %}>
+                <a href="#">Write code</a></li>
+              <li class="nav-header">Use data</li>
+              <li{% if name == "maps" %} class="active"{% endif %}>
+                <a href="#">Maps</a></li>
+              <li{% if name == "report" %} class="active"{% endif %}>
+                <a href="#">Report</a></li>
+              <li class="nav-header">Meta</li>
+              <li{% if name == "about" %} class="active"{% endif %}>
+                <a href="#">About</a></li>
+              <li{% if name == "how-to" %} class="active"{% endif %}>
+                <a href="#">How-to</a></li>
+              <li{% if name == "kits" %} class="active"{% endif %}>
+                <a href="#">Testing kits</a></li>
+            </ul>
+{% endwith %}
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          {% block hero %}
+          <div class="hero-unit">
+            <h1>{% block header %}{% endblock %}</h1>
+          </div>
+          {% endblock hero %}
+          <div class="row-fluid">
+          {% block content %}
+          {% endblock %}
+          </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p >Open Water 2013</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+    <script src="../assets/js/jquery.js"></script>
+    <!-- Le javascript
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-alert.js"></script>
+    <script src="../assets/js/bootstrap-modal.js"></script>
+    <script src="../assets/js/bootstrap-dropdown.js"></script>
+    <script src="../assets/js/bootstrap-scrollspy.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+    <script src="../assets/js/bootstrap-tooltip.js"></script>
+    <script src="../assets/js/bootstrap-popover.js"></script>
+    <script src="../assets/js/bootstrap-button.js"></script>
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-carousel.js"></script>
+    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    ================================================== -->
+
+  
+
+</body>
