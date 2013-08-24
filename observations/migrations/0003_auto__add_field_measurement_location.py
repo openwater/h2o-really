@@ -10,19 +10,19 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Measurement.location'
         sql = """
-        SELECT AddGeometryColumn('quality_measurement', 'location', 4326, 'POINT', 2);
-        ALTER TABLE "quality_measurement" ALTER "location" SET NOT NULL;
-        CREATE INDEX "quality_measurement_location_id" ON "quality_measurement" USING GIST ( "location" );
+        SELECT AddGeometryColumn('observations_measurement', 'location', 4326, 'POINT', 2);
+        ALTER TABLE "observations_measurement" ALTER "location" SET NOT NULL;
+        CREATE INDEX "observations_measurement_location_id" ON "observations_measurement" USING GIST ( "location" );
         """
         db.execute(sql)
 
     def backwards(self, orm):
         # Deleting field 'Measurement.location'
-        db.delete_column(u'quality_measurement', 'location')
+        db.delete_column(u'observations_measurement', 'location')
 
 
     models = {
-        u'quality.measurement': {
+        u'observations.measurement': {
             'Meta': {'object_name': 'Measurement'},
             'created_timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -33,4 +33,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['quality']
+    complete_apps = ['observations']
