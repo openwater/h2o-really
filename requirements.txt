@@ -1,0 +1,8 @@
+Django==1.5.2
+South==0.8.2
+-e git+https://github.com/fission6/django-hstore.git@54edcf9f6d293ca0a6e1480b488fab6e94952cfb#egg=django_hstore-dev
+gunicorn==17.5
+ipython==1.0.0
+psutil==1.0.1
+psycopg2==2.5.1
+wsgiref==0.1.2
