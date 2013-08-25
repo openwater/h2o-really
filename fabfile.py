@@ -42,7 +42,7 @@ DJANGO_APP_ROOT = '/home/%s/webapps/%s' % (USER, APP_NAME)
 
 # Directory where static sources should be collected.  This must equal the value
 # of STATIC_ROOT in the settings.py that is used on the server.
-STATIC_ROOT = '/home/%s/webapps/%s_static/' % (USER, APP_NAME)
+STATIC_ROOT = '/home/%s/webapps/%s_static/static/' % (USER, APP_NAME)
 
 # Subdirectory of DJANGO_APP_ROOT in which project sources will be stored
 SRC_SUBDIR = 'src'
