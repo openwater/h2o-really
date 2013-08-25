@@ -85,6 +85,9 @@
               <li class="nav-header">Meta</li>
               <li{% if name == "about" %} class="active"{% endif %}>
                 <a href="#">About</a></li>
+              <li{% if name == "supplements-sources" %} class="active"{% endif %}>
+              <a href="{% url 'supplements-sources' %}">
+                  Data sources, attributions</a></li>
               <li{% if name == "how-to" %} class="active"{% endif %}>
                 <a href="#">How-to</a></li>
               <li{% if name == "kits" %} class="active"{% endif %}>
