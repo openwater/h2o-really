@@ -140,7 +140,7 @@ def webserver_stop():
 
 
 def _webserver_command():
-    return ("%(venv_dir)s/bin/gunicorn --log-file=%(logfile)s -b 127.0.0.1:%(port)s -D -w %(workers)s --pid %(pidfile)s %(wsgimodule)s:application" %
+    return ("%(venv_dir)s/bin/gunicorn --log-file=%(logfile)s -b 0.0.0.0:%(port)s -D -w %(workers)s --pid %(pidfile)s %(wsgimodule)s:application" %
             {'venv_dir': VENV_DIR,
              'pidfile': GUNICORN_PIDFILE,
              'wsgimodule': WSGI_MODULE,
