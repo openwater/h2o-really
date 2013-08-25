@@ -61,7 +61,7 @@ GUNICORN_LOGFILE = "/home/%s/logs/user/gunicorn_%s.log" % (USER, APP_NAME)
 SRC_DIR = posixpath.join(DJANGO_APP_ROOT, SRC_SUBDIR)
 VENV_DIR = posixpath.join(DJANGO_APP_ROOT, VENV_SUBDIR)
 
-WSGI_MODULE = 'openwater.wsgi' % APP_NAME
+WSGI_MODULE = 'openwater.wsgi'
 
 
 def virtualenv(venv_dir):
