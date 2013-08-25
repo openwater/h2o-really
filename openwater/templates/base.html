@@ -70,12 +70,13 @@
             {% with request.resolver_match.url_name as name %}
             <ul class="nav nav-list">
               <li{% if name == "home" %} class="active"{% endif %}>
-                <a href="#">Home</a></li>
+              <a href="{% url 'home' %}">Home</a></li>
               <li class="nav-header">Contribute</li>
               <li{% if name == "add-measurements" %} class="active"{% endif %}>
                 <a href="#">Add measurements</a></li>
-              <li{% if name == "write-code" %} class="active"{% endif %}>
-                <a href="#">Write code</a></li>
+              <li{% if name == "contribute-technical" %} class="active"{% endif %}>
+              <a href="{% url 'contribute-technical' %}">
+                  Coding, Design &amp; GIS</a></li>
               <li class="nav-header">Use data</li>
               <li{% if name == "maps" %} class="active"{% endif %}>
                 <a href="#">Maps</a></li>

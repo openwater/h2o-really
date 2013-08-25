@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
+from django.views.generic.base import TemplateView
 from django.contrib import admin
+
 admin.autodiscover()
 
 from .views import HomePageView
@@ -11,6 +11,9 @@ urlpatterns = patterns(
     '',
     # Examples:
     url(r'^$', HomePageView.as_view(), name='home'),
+    url(r'^contributing/technical/$',
+        TemplateView.as_view(template_name="contributing.html"),
+        name='contribute-technical'),
     # url(r'^openwater/', include('openwater.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

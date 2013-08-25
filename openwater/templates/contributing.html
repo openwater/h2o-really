@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Contributing | Code, Design &amp; GIS{% endblock %}
+{% block header %}
+    <h1>Help make this website!</h1>
+    <h2>Many drops make an ocean.</h2>
+{% endblock %}
+{% block content %}
+    <div class="span12">
+        <p>
+            If you think this is a good idea, even just maybe an interesting
+            idea, or perhaps you know of something similar, maybe you can help?
+        </p>
+        <p>
+            The intent of this project is to be completely open, and to use and
+            gather as much data from as many sources as possible. If you can
+            write code or wield a GIS, then you <strong>can</strong> help!
+        </p>
+        <h3>Quick links</h3>
+        <ul>
+            <li><a href="https://github.com/stringfellow/openwater/">
+                GitHub code repository</a></li>
+            <li><a href="https://github.com/stringfellow/openwater/issues">
+                GitHub issues page</a></li>
+            <li><a href="https://github.com/stringfellow/openwater/wiki">
+                GitHub wiki page</a></li>
+        </ul>
+        <h3>Coding</h3>
+        <p>
+            All of the code is available on GitHub,
+            <a href="http://github.com/stringfellow/openwater/">here</a>.
+            There's a README file in there that should tell you how to get up
+            and running, but if you have any problems, add an issue.
+        </p>
+        <p>
+            The core of the site is GeoDjango, with a PostGIS database. I'm a
+            python guy, so its all pretty much python for now, but any tools
+            provided are welcome, in any language, so long as they have some
+            documentation -- and if possible, tests.
+        </p>
+        <h3>Design</h3>
+        <p>
+            So, yep. We're using Twitter Bootstrap right now. Not even changed
+            the defaults. Wanna make this look prettier, add some UI tricks or
+            improve the UX? Please, that would be awesome.
+        </p>
+        <p>
+            Right now, there's not a virtual box or anything ready-to-go, but
+            if you know the basics of git, then you're golden. Just clone it,
+            branch it, commit and push it! You can also fork it on GitHub, of
+            course.
+            In due course we should have a virtualbox that you'll be able to
+            download and run to test on.
+        </p>
+        <p>
+            Check the list of issues, or just send some ideas by pull request.
+        </p>
+        <h3>GIS</h3>
+        <p>
+            Know your shapefile from your elbow? Ever re-projected some
+            thematic maps? Do you speak in WKT? Then you can probably help!
+        </p>
+        <p>
+            This project uses a spatial back-end, and we're trying to compile
+            a load of sources - bodies of water, historic data in databases and
+            shapefiles, etc. If you can help write scripts to get this data
+            into our PostGIS database, then we can make this project all the
+            more open and complete.
+        </p>
+        <p>
+            In due course, we'll publish the fields needed for any external
+            thematic layers, as well as the record format for observation &amp;
+            measurement data. In the mean time, take a look at
+            <a href="https://docs.djangoproject.com/en/dev/ref/contrib/gis/layermapping/">
+                GeoDjango's LayerMapping docs</a> which show you how to
+            manipulate shapefiles into Django models.
+        </p>
+        <p>
+            Otherwise, if you find sources that have an open license (i.e.
+            allows reuse and re-publishing of the data), then please send links
+            in GitHub issues, or add them to a pull request.
+        </p>
+    </div><!--/span-->
+{% endblock content %}
