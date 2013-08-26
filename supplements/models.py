@@ -25,6 +25,7 @@ class DataSource(models.Model):
         help_text="The attribution as the author requested it.")
     year = models.PositiveIntegerField()
     license = models.ForeignKey(License)
+    url = models.URLField(blank=True, null=True)
 
     def __unicode__(self):
         return self.title
