@@ -15,8 +15,10 @@
     <p>
         <ul>
             {% for source in datasources %}
-            <li><strong>{{ source.title }}</strong>{% if source.year %},
-                {{ source.year }} {% endif %}-
+            <li>{% if source.url %}<a href="{{ source.url }}">{% endif %}
+                <strong>{{ source.title }}</strong>{% if source.url %}</a>{% endif %}{% if source.year %},
+                {{ source.year }}{% endif %}
+                -
                 <em>{{ source.attribution }}</em>
                 {% if source.license.url %}
                   (<a href="{{ source.license.url}}">{{ source.license }}</a>)
