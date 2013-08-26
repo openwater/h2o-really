@@ -24,7 +24,9 @@
             }
           }
         </style>
-        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+        {% block extra_head %}{% endblock %}
 	</head>
 	<body>
 
@@ -135,7 +137,7 @@
 
     </div><!--/.fluid-container-->
 
-    <script src="../assets/js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
     <!-- Le javascript
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
@@ -150,6 +152,7 @@
     <script src="../assets/js/bootstrap-carousel.js"></script>
     <script src="../assets/js/bootstrap-typeahead.js"></script>
     ================================================== -->
+    {% block js %}{% endblock %}
 
   
 

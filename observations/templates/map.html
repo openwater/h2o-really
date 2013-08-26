@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Map{% endblock %}
+
+{% block extra_head %}
+<style type="text/css">
+  html { height: 100%; }
+  body { height: 100%; }
+  #map-canvas { height: 800px; width: 900px; }
+</style>
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCamMHSj_54_jXgosr6WvH55EzmnCCa3zo&sensor=true">
+</script>
+{% endblock %}
+{% block header %}
+    <h1>Map</h1>
+    <h2></h2>
+{% endblock %}
+{% block content %}
+    <div class="span12">
+        <div id="map-canvas"></div>
+    </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+  markersArray = [];
+
+  function addMarker(location, map) {
+    marker = new google.maps.Marker({
+        position: location,
+        map: map
+    });
+    markersArray.push(marker);
+  }
+
+  function initialize() {
+    var mapOptions = {
+      center: new google.maps.LatLng(51, 0),
+      zoom: 5,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+    {% for m in measurements %}
+    addMarker(new google.maps.LatLng({{ m.location.y }}, {{ m.location.x }}), map);
+    {% endfor %}
+  }
+  google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+{% endblock %}

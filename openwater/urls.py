@@ -15,6 +15,7 @@ urlpatterns = patterns(
         TemplateView.as_view(template_name="contributing.html"),
         name='contribute-technical'),
     url(r'^supporting-data/', include('supplements.urls')),
+    url(r'^observations/', include('observations.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
