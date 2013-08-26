@@ -1,6 +1,7 @@
 import json
 
 from rest_framework import serializers
+from rest_framework_gis import serializers as geo_serializers
 
 from observations.models import Measurement
 
@@ -15,7 +16,7 @@ class DictionaryField(serializers.Field):
         return ret
 
 
-class MeasurementSerializer(serializers.ModelSerializer):
+class MeasurementSerializer(geo_serializers.GeoModelSerializer):
     observations = DictionaryField()
 
     class Meta:
