@@ -36,3 +36,5 @@ nosetests.xml
 
 # VIM swapfiles
 *.sw[po]
+
+openwater/local_settings.py
