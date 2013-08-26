@@ -17,6 +17,9 @@ urlpatterns = patterns(
     url(r'^supporting-data/', include('supplements.urls')),
     url(r'^observations/', include('observations.urls')),
 
+    url(r'^api/v1/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/v1/observations/', include('observations.api.urls')),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
