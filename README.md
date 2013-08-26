@@ -64,6 +64,6 @@ Browse the API
 --------------
 After loading some data, you should be able to browse the API at, e.g.:
 
-http://localhost:8000/api/v1/observations/measurements/
+http://127.0.0.1:8000/api/v1/observations/measurements/
 
 See `openwater/urls.py` and `observations/api/urls.py` for more information.
