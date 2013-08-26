@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.gis.db import models as gmodels
+from django_hstore import hstore
 
 
 class License(models.Model):
@@ -26,3 +28,15 @@ class DataSource(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class DataLayer(gmodels.Model):
+    """Any external data that has a geometry that can be added to the map."""
+    name = gmodels.CharField(max_length=200)
+    description = gmodels.TextField(null=True, blank=True)
+    added = gmodels.DateTimeField(auto_now_add=True)
+    source = gmodels.ForeignKey(DataSource)
+    shape = gmodels.GeometryField()
+    info = hstore.DictionaryField(
+        null=True, blank=True,
+        help_text="Any supplementary data for this shape.")
