@@ -28,7 +28,7 @@ If you want to help out:
   the spatial element, simply create a database (let’s call it h2o\_really) and then
   enable the spatial element:
 
-        createdb -h localhost h2o_really psql -h localhost h2o_really
+        createdb -h localhost h2o_really && psql -h localhost h2o_really
         h2o_really=# CREATE EXTENSION postgis;
   
   Then you need the hstore extension:
