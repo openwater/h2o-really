@@ -147,6 +147,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'south',
     'django_hstore',
+    'rest_framework',
 
     'supplements',
     'observations',
@@ -179,6 +180,11 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 10,
+    'PAGINATE_BY_PARAM': 'page_size' 
 }
 
 try:
