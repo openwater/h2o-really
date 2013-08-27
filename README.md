@@ -45,3 +45,25 @@ If you want to help out:
 * `./manage.py migrate`
 * Add/fix/commit stuff on a branch
 * Submit a pull request
+
+Load initial data
+-----------------
+
+With your server running, go to the admin site and add a License with the following information:
+* name: OGL
+* URL: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/
+* version: 2
+
+With that added, you can run a script to load the initial data sets, eg:
+
+    python scripts/load_gqahi_nutrients.py data/GQAHI_Nutrients/nitrate\ GQA\ grades\ 2009\ \(Wales\).csv --nutrient N
+
+and likewise for the three other CSV files in the data directory.
+
+Browse the API
+--------------
+After loading some data, you should be able to browse the API at, e.g.:
+
+http://127.0.0.1:8000/api/v1/observations/measurements/
+
+See `openwater/urls.py` and `observations/api/urls.py` for more information.
