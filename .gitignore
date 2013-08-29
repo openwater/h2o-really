@@ -38,3 +38,7 @@ nosetests.xml
 *.sw[po]
 
 openwater/local_settings.py
+
+# ignore top-level 'static', but not any sub-directories called 'static'
+static/
+!*/**/static

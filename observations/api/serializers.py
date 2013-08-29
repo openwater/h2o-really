@@ -16,11 +16,12 @@ class DictionaryField(serializers.Field):
         return ret
 
 
-class MeasurementSerializer(geo_serializers.GeoModelSerializer):
+class MeasurementSerializer(geo_serializers.GeoFeatureModelSerializer):
     observations = DictionaryField()
 
     class Meta:
         model = Measurement
+        geo_field = 'location'
         fields = (
             'created_timestamp', 'reference_timestamp', 'location',
             'location_reference', 'observations', 'source',
