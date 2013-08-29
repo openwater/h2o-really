@@ -7,8 +7,15 @@
   body { height: 100%; }
   #map-canvas { height: 800px; width: 900px; }
 </style>
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCamMHSj_54_jXgosr6WvH55EzmnCCa3zo&sensor=true">
+<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/leaflet.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.Default.css" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/leaflet.ie.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.Default.ie.css" />
+<![endif]-->
+<script type="text/javascript" src="{{ STATIC_URL }}leaflet-0.6.4/leaflet.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}leaflet-0.6.4/plugins/leaflet.markercluster.js"></script>
 </script>
 {% endblock %}
 {% block header %}
@@ -22,29 +29,29 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
-
-  markersArray = [];
-
-  function addMarker(location, map) {
-    marker = new google.maps.Marker({
-        position: location,
-        map: map
+    var map = L.map('map-canvas').setView([55, -4], 6);
+    var markers = new L.MarkerClusterGroup({
+        disableClusteringAtZoom: 12
     });
-    markersArray.push(marker);
-  }
+    L.tileLayer(
+        'http://{s}.tile.cloudmade.com/{{ API_KEY }}/997/256/{z}/{x}/{y}.png',
+        {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            maxZoom: 18
+        }
+    ).addTo(map);
 
-  function initialize() {
-    var mapOptions = {
-      center: new google.maps.LatLng(51, 0),
-      zoom: 5,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-        mapOptions);
-    {% for m in measurements %}
-    addMarker(new google.maps.LatLng({{ m.location.y }}, {{ m.location.x }}), map);
-    {% endfor %}
-  }
-  google.maps.event.addDomListener(window, 'load', initialize);
+    $.getJSON('/api/v1/observations/measurements/?page_size=0', function(data) {
+        var geoJsonLayer = L.geoJson(data, {
+            style: function(feature) {
+                return {};
+            },
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup(feature.properties.reference_timestamp);
+            }
+        });
+        markers.addLayer(geoJsonLayer);
+        map.addLayer(markers);
+    });
 </script>
 {% endblock %}

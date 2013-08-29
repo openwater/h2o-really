@@ -67,3 +67,12 @@ After loading some data, you should be able to browse the API at, e.g.:
 http://127.0.0.1:8000/api/v1/observations/measurements/
 
 See `openwater/urls.py` and `observations/api/urls.py` for more information.
+
+Browse the data
+---------------
+In order for the interactive maps to work, you will need to register for an API key from CloudMade (http://cloudmade.com/).
+Once you have a key, include it in your local settings as `CLOUDMADE_API_KEY`.
+
+With that set up you should be able to visit the map page and see some nice clustered observations:
+
+http://127.0.0.1:8000/observations/map/
