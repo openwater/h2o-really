@@ -187,6 +187,9 @@ REST_FRAMEWORK = {
     'PAGINATE_BY_PARAM': 'page_size'
 }
 
+# Override this in your local settings
+CLOUDMADE_API_KEY = ''
+
 try:
     from local_settings import *
 except ImportError:
