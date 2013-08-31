@@ -23,5 +23,8 @@ class Measurement(models.Model):
     objects = models.GeoManager()
     observations_manager = hstore.HStoreManager()
 
+    class Meta:
+        ordering = ('-reference_timestamp',)
+
     def __unicode__(self):
         return u"Observation at {0}".format(self.created_timestamp)
