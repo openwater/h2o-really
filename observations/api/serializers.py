@@ -16,6 +16,13 @@ class DictionaryField(serializers.Field):
         return ret
 
 
+class CompactMeasurementSerializer(geo_serializers.GeoFeatureModelSerializer):
+    class Meta:
+        model = Measurement
+        geo_field = 'location'
+        fields = ('id', 'location')
+
+
 class MeasurementSerializer(geo_serializers.GeoFeatureModelSerializer):
     observations = DictionaryField()
 
@@ -23,6 +30,6 @@ class MeasurementSerializer(geo_serializers.GeoFeatureModelSerializer):
         model = Measurement
         geo_field = 'location'
         fields = (
-            'created_timestamp', 'reference_timestamp', 'location',
+            'id', 'created_timestamp', 'reference_timestamp', 'location',
             'location_reference', 'observations', 'source',
         )
