@@ -41,13 +41,13 @@
         }
     ).addTo(map);
 
-    $.getJSON('/api/v1/observations/measurements/?page_size=5000', function(data) {
+    $.getJSON('/api/v1/observations/measurements/?compact=true&page_size=5000', function(data) {
         var geoJsonLayer = L.geoJson(data.results, {
             style: function(feature) {
                 return {};
             },
             onEachFeature: function(feature, layer) {
-                layer.bindPopup(feature.properties.reference_timestamp);
+                //
             }
         });
         markers.addLayer(geoJsonLayer);
