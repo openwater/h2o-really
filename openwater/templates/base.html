@@ -51,10 +51,10 @@
             <ul class="nav">
               <li{% if name == "home" %} class="active"{% endif %}>
                   <a href="{% url 'home' %}">Home</a></li>
-              <li{% if name == "add-measurements" %} class="active"{% endif %}>
-                <a href="#">Add measurements</a></li>
-              <li{% if name == "kits" %} class="active"{% endif %}>
-                <a href="#">Get testing kits</a></li>
+              <li{% if name == "observations-add" %} class="active"{% endif %}>
+                  <a href="{% url "observations-add" %}">Add measurements</a></li>
+              <li{% if name == "sample-kits" %} class="active"{% endif %}>
+              <a href="{% url "sample-kits" %}">Get testing kits</a></li>
               {% if request.user.is_staff %}
               <li><a href="{% url 'admin:index' %}">Admin</a></li>
               {% endif %}
@@ -74,8 +74,8 @@
               <li{% if name == "home" %} class="active"{% endif %}>
               <a href="{% url 'home' %}">Home</a></li>
               <li class="nav-header">Contribute</li>
-              <li{% if name == "add-measurements" %} class="active"{% endif %}>
-                <a href="#">Add measurements</a></li>
+              <li{% if name == "observations-add" %} class="active"{% endif %}>
+              <a href="{% url "observations-add" %}">Add measurements</a></li>
               <li{% if name == "contribute-technical" %} class="active"{% endif %}>
               <a href="{% url 'contribute-technical' %}">
                   Coding, Design &amp; GIS</a></li>
@@ -92,8 +92,8 @@
                   Data sources, attributions</a></li>
               <li{% if name == "how-to" %} class="active"{% endif %}>
                 <a href="#">How-to</a></li>
-              <li{% if name == "kits" %} class="active"{% endif %}>
-                <a href="#">Testing kits</a></li>
+              <li{% if name == "sample-kits" %} class="active"{% endif %}>
+              <a href="{% url "sample-kits" %}">Testing kits</a></li>
             </ul>
 {% endwith %}
           </div><!--/.well -->
