@@ -41,7 +41,7 @@
         }
     ).addTo(map);
 
-    $.getJSON('/api/v1/observations/measurements/?page_size=5000', function(data) {
+    $.getJSON('/api/v1/observations/measurements/?page_size=5000&from_date=2008-01-01', function(data) {
         var geoJsonLayer = L.geoJson(data.results, {
             style: function(feature) {
                 return {};

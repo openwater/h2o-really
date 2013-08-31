@@ -9,3 +9,4 @@ wsgiref==0.1.2
 osgb==0.2dev
 djangorestframework==2.3.7
 -e git+https://github.com/dmeehan/django-rest-framework-gis.git@9ade355885f3cff07557749a5cf8ea5df90c9280#egg=django-rest-framework-gis
+django-filter==0.7
