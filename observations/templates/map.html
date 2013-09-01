@@ -75,7 +75,11 @@
                 }
 
                 if (from && to) {
-                    msg += ' between ' + from + ' and ' + to;
+                    if (from === to) {
+                        msg += ' on ' + from;
+                    } else {
+                        msg += ' between ' + from + ' and ' + to;
+                    }
                 } else if (from) {
                     msg += ' since ' + from;
                 } else if (to) {
@@ -83,10 +87,10 @@
                 }
 
                 if (limit < data.count) {
-                    msg += ' (showing most recent ' + data.results.length + ')';
+                    msg += ' (showing the most recent ' + data.results.length + ')';
                 }
 
-                $('#meta').html(msg);
+                $('#meta').html(msg + '.');
             });
         };
 
