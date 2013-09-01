@@ -30,7 +30,7 @@
         <form id="map-filter">
             <p>
                 <label for="page_size">Max results:</label>
-                <input type="text" name="page_size" value="5000" />
+                <input type="text" id="id_page_size" name="page_size" value="5000" />
             </p>
             {{ filter.form.as_p }}
             <input type="submit" />
@@ -69,7 +69,6 @@
                 var from = $('#id_from_date').val();
                 var to = $('#id_to_date').val();
                 var limit = $('#id_page_size').val();
-                var count = data.results.length;
 
                 if (observed) {
                     msg += ' of ' + observed;
@@ -83,8 +82,8 @@
                     msg += ' up to ' + to;
                 }
 
-                if (limit !== count) {
-                    msg += ' (showing most recent ' + count + ')';
+                if (limit < data.count) {
+                    msg += ' (showing most recent ' + data.results.length + ')';
                 }
 
                 $('#meta').html(msg);
