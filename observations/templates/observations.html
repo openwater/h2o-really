@@ -17,7 +17,7 @@
             kits</a> which have some advice on where to get kits and how to get
         started.
     </p>
-        {% crispy form %}
+    {% crispy form %}
 </div>
 {% endblock %}
 
@@ -40,5 +40,17 @@
 //    $(document).ready(function() {
 //        getLocation();
 //    });
+
+    function addObsRow() {
+        // Add another observation row
+        var nextrow = $('#add-another-btn').data('nextrow');
+        $.get(
+            "{% url "observations-add-param" %}?nextrow=" + nextrow,
+            function(html) {
+                $('#add-another-btn').data('nextrow', nextrow + 1);
+                $('#param-rows').append(html);
+            }
+        );
+    }
 </script>
 {% endblock js %}

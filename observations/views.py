@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView, View
 from django.shortcuts import render
 
 from .models import Measurement
-from .forms import MeasurementsForm
+from .forms import MeasurementsForm, ParamRowForm
 
 
 class MapView(TemplateView):
@@ -22,5 +22,16 @@ class AddView(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+class ParamRowView(View):
+    form_class = ParamRowForm
+    initial = {}
+    template_name = 'param-row.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(
+            initial=self.initial, row_id=request.GET.get('nextrow'))
         return render(request, self.template_name, {'form': form})
 
