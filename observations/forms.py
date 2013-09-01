@@ -8,8 +8,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field
 from datetimewidget.widgets import DateTimeWidget
 
-from .models import Measurement
-from .utils import fetch_parameter_keys
+from .models import Measurement, Parameter
 
 
 class PointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
@@ -31,7 +30,8 @@ class ParamRowForm(forms.Form):
     """Just a single obs row."""
     obs_parameter = forms.ChoiceField(
         choices=[('', 'Select one')] + [
-            (p, p) for p in fetch_parameter_keys()
+            (p, p) for p in Parameter.objects.all().values_list(
+                'name', flat=True)
         ] + [('__NEW__', 'Add new...')]
     )
     new_parameter = forms.CharField(required=False)
@@ -50,7 +50,8 @@ class MeasurementsForm(forms.ModelForm):
     """The main obs form which should corrale the various metrics."""
     obs_parameter = forms.ChoiceField(
         choices=[('', 'Select one')] + [
-            (p, p) for p in fetch_parameter_keys()
+            (p, p) for p in Parameter.objects.all().values_list(
+                'name', flat=True)
         ] + [('__NEW__', 'Add new...')]
     )
     new_parameter = forms.CharField(required=False)
@@ -80,6 +81,8 @@ class MeasurementsForm(forms.ModelForm):
         self.helper.form_id = "add-observations-form"
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
+            HTML("<h1>This form doesn't work yet!</h1>"),
+            HTML("<p>We're still building this bit. Sorry!"),
             Fieldset(
                 'Where, when & who',
                 'location_reference',
@@ -97,7 +100,10 @@ class MeasurementsForm(forms.ModelForm):
                     'another', 'Add another parameter',
                     css_id='add-another-btn', data_nextrow='1',
                     onclick='addObsRow()'),
-                Submit('submit', 'Submit', css_class='button white'),
+                Submit(
+                    'submit', 'Submit', css_class='button white',
+                    onclick='alert("Sorry... we\'re not quite ready yet!")'
+                ),
             )
         )
         super(MeasurementsForm, self).__init__(*args, **kwargs)

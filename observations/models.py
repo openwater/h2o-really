@@ -2,6 +2,14 @@ from django.contrib.gis.db import models
 from django_hstore import hstore
 
 
+class Parameter(models.Model):
+    """Some parameter of quality that needs monitoring."""
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Test(models.Model):
     """Lays out a load of meta stuff about a particular test.
 
@@ -22,6 +30,7 @@ class Test(models.Model):
         value stored in the through relationship would be 'present' or 'absent'
 
     """
+    parameter = models.ForeignKey(Parameter)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     vendor_or_authority = models.CharField(

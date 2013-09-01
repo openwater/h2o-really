@@ -11,6 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Test'
         db.create_table(u'observations_test', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('parameter', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['observations.Parameter'])),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('vendor_or_authority', self.gf('django.db.models.fields.CharField')(max_length=100)),
@@ -19,6 +20,13 @@ class Migration(SchemaMigration):
             ('test_type', self.gf('django.db.models.fields.CharField')(max_length=20)),
         ))
         db.send_create_signal(u'observations', ['Test'])
+
+        # Adding model 'Parameter'
+        db.create_table(u'observations_parameter', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
+        ))
+        db.send_create_signal(u'observations', ['Parameter'])
 
         # Adding model 'TestValue'
         db.create_table(u'observations_testvalue', (
@@ -33,6 +41,9 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Deleting model 'Test'
         db.delete_table(u'observations_test')
+
+        # Deleting model 'Parameter'
+        db.delete_table(u'observations_parameter')
 
         # Deleting model 'TestValue'
         db.delete_table(u'observations_testvalue')
@@ -51,12 +62,18 @@ class Migration(SchemaMigration):
             'reference_timestamp': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['supplements.DataSource']", 'null': 'True', 'blank': 'True'})
         },
+        u'observations.parameter': {
+            'Meta': {'object_name': 'Parameter'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
         u'observations.test': {
             'Meta': {'object_name': 'Test'},
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'meta': ('django_hstore.fields.DictionaryField', [], {'db_index': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'parameter': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['observations.Parameter']"}),
             'test_type': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'unit': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'vendor_or_authority': ('django.db.models.fields.CharField', [], {'max_length': '100'})

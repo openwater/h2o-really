@@ -56,9 +56,9 @@ With your server running, go to the admin site and add a License with the follow
 
 With that added, you can run a script to load the initial data sets, eg:
 
-    python scripts/load_gqahi_nutrients.py data/GQAHI_Nutrients/nitrate\ GQA\ grades\ 2009\ \(Wales\).csv --nutrient N
+    ./manage.py load_gqahi_nutrients data/GQAHI_Nutrients/nitrate\ GQA\ grades\ 2009\ \(Wales\).csv --nutrient N
 
-and likewise for the three other CSV files in the data directory.
+and likewise for the three other CSV files in the data directory (use P as the nutrient argument for Phosphates).
 
 Browse the API
 --------------
