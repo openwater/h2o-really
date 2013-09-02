@@ -199,5 +199,6 @@ CLOUDMADE_API_KEY = ''
 
 try:
     from local_settings import *
+    post_import(globals())
 except ImportError:
     pass

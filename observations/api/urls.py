@@ -8,7 +8,8 @@ from observations.api.views import MeasurementList
 
 urlpatterns = patterns(
     '',
-    url(r'^measurements/$', MeasurementList.as_view()),
+    url(r'^measurements/$', MeasurementList.as_view(),
+        name="observations_api_measurements"),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
