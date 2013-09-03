@@ -148,6 +148,9 @@ INSTALLED_APPS = (
     'south',
     'django_hstore',
     'rest_framework',
+    'crispy_forms',
+    'floppyforms',
+    'datetimewidget',
 
     'supplements',
     'observations',

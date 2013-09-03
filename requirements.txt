@@ -10,3 +10,6 @@ osgb==0.2dev
 djangorestframework==2.3.7
 -e git+https://github.com/dmeehan/django-rest-framework-gis.git@9ade355885f3cff07557749a5cf8ea5df90c9280#egg=django-rest-framework-gis
 django-filter==0.7
+django-crispy-forms==1.3.2
+https://github.com/stringfellow/django-datetime-widget/archive/ea816526910f695ff8cd7298bdaad5cd0d0edf8d.tar.gz#egg=datetimewidget
+django-floppyforms==1.1

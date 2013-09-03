@@ -14,6 +14,9 @@ urlpatterns = patterns(
     url(r'^contributing/technical/$',
         TemplateView.as_view(template_name="contributing.html"),
         name='contribute-technical'),
+    url(r'^sample-kits/$',
+        TemplateView.as_view(template_name="sample-kits.html"),
+        name="sample-kits"),
     url(r'^supporting-data/', include('supplements.urls')),
     url(r'^observations/', include('observations.urls')),
 

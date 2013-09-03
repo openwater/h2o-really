@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Contributing | Add your observations{% endblock %}
+{% block extra_head %}
+    {{ form.media }}
+{% endblock %}
+{% block header %}
+    <h1>Add your own observations!</h1>
+    <h2>Water, water, everywhere&hellip;</h2>
+{% endblock %}
+{% block content %} 
+<div class="span12">
+    <p>
+        Want to add your own water quality measurements and observations? If
+        you already know what you're doing, great! Fill out the form below.
+        Otherwise, take a look at <a href="{% url "sample-kits" %}">the sample
+            kits</a> which have some advice on where to get kits and how to get
+        started.
+    </p>
+    {% crispy form %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+//    function setMapPosition(position) {
+//        // TODO: this doesn't work, for some reason.. projection is right?
+//        map_location.map.setCenter(
+//            new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude),
+//            5
+//        );
+//    };
+//
+//    function getLocation() {
+//        if (navigator.geolocation) {
+//            navigator.geolocation.getCurrentPosition(setMapPosition);
+//        }
+//    };
+//
+//    $(document).ready(function() {
+//        getLocation();
+//    });
+
+    function addObsRow() {
+        // Add another observation row
+        var nextrow = $('#add-another-btn').data('nextrow');
+        $.get(
+            "{% url "observations-add-param" %}?nextrow=" + nextrow,
+            function(html) {
+                $('#add-another-btn').data('nextrow', nextrow + 1);
+                $('#param-rows').append(html);
+            }
+        );
+    }
+</script>
+{% endblock js %}
