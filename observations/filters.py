@@ -18,6 +18,7 @@ class MeasurementFilter(django_filters.FilterSet):
                 'endDate': date.today(),
                 'todayBtn': 'true',
                 'todayHighlight': 'true',
+                'minView': 2,
             })
     )
     to_date = django_filters.DateTimeFilter(
@@ -31,6 +32,7 @@ class MeasurementFilter(django_filters.FilterSet):
                 'endDate': date.today() + timedelta(days=1),
                 'todayBtn': 'true',
                 'todayHighlight': 'true',
+                'minView': 2,
             })
     )
     parameter = django_filters.ChoiceFilter(
