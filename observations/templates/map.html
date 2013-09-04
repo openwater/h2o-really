@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Map{% endblock %}
 
 {% block extra_head %}
@@ -7,17 +8,17 @@
   body { height: 100%; }
   #map-canvas { height: 800px; width: 900px; }
 </style>
-<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/leaflet.css" />
-<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.css" />
-<link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.Default.css" />
+<link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.css' %}" />
+<link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.css' %}" />
+<link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.Default.css' %}" />
 <!--[if lte IE 8]>
-    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/leaflet.ie.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}leaflet-0.6.4/plugins/MarkerCluster.Default.ie.css" />
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.ie.css' %}" />
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.Default.ie.css' %}" />
 <![endif]-->
-<link rel="stylesheet" href="{{ STATIC_URL }}observations/css/map.css" />
+<link rel="stylesheet" href="{% static 'observations/css/map.css' %}" />
 
-<script type="text/javascript" src="{{ STATIC_URL }}leaflet-0.6.4/leaflet.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}leaflet-0.6.4/plugins/leaflet.markercluster.js"></script>
+<script type="text/javascript" src="{% static 'leaflet-0.6.4/leaflet.js' %}"></script>
+<script type="text/javascript" src="{% static 'leaflet-0.6.4/plugins/leaflet.markercluster.js' %}"></script>
 {{ filter.form.media }}
 </script>
 {% endblock %}

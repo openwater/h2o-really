@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -5,7 +6,7 @@
         <meta charset='utf-8'> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
-        <link href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="{% static 'bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen' %}">
         <style type="text/css">
           body {
             padding-top: 60px;
@@ -119,13 +120,13 @@
               <div class="span4">
                 <ul>
                     <li>OpenWater 2013</li>
-                    <li><a href="http://github.com/stringfellow/openwater/">
+                    <li><a href="https://github.com/openwater/h2o-really">
                         View on GitHub</a></li>
                 </ul>
             </div>
             <div class="span4">
                 <ul>
-                    <li><a href="http://twitter.com/H2OReally/">
+                    <li><a href="https://twitter.com/H2OReally/">
                         Follow on Twitter</a></li>
                 </ul>
             </div>
@@ -137,7 +138,7 @@
 
     </div><!--/.fluid-container-->
 
-    <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <!-- Le javascript
     <script src="../assets/js/bootstrap-transition.js"></script>
     <script src="../assets/js/bootstrap-alert.js"></script>
