@@ -19,6 +19,7 @@ class MeasurementFilter(django_filters.FilterSet):
                 'todayBtn': 'true',
                 'todayHighlight': 'true',
                 'minView': 2,
+                'startView': 3,
             })
     )
     to_date = django_filters.DateTimeFilter(
@@ -33,13 +34,10 @@ class MeasurementFilter(django_filters.FilterSet):
                 'todayBtn': 'true',
                 'todayHighlight': 'true',
                 'minView': 2,
+                'startView': 3,
             })
-    )
-    parameter = django_filters.ChoiceFilter(
-        name='parameters__parameter__name',
-        choices=[(p.name, p.name) for p in Parameter.objects.all()],
     )
 
     class Meta:
         model = Measurement
-        fields = ['from_date', 'to_date', 'parameter']
+        fields = ['from_date', 'to_date', 'parameters']
