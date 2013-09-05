@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 
-import floppyforms as forms
+from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field
 from datetimewidget.widgets import DateTimeWidget
+from leaflet.forms.fields import PointField
 
 from .models import Measurement, Parameter
-
-
-class PointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
-    pass
 
 
 def get_new_obs_row(row_id=0):
@@ -54,14 +51,15 @@ class MeasurementsForm(forms.ModelForm):
                 'name', flat=True)
         ] + [('__NEW__', 'Add new...')]
     )
+    location = PointField()
     new_parameter = forms.CharField(required=False)
 
     class Meta:
         model = Measurement
         widgets = {
-            'location': PointWidget(attrs={
-                'display_wkt': True,
-            }),
+#            'location': PointWidget(attrs={
+#                'display_wkt': True,
+#            }),
             'reference_timestamp': DateTimeWidget(options={
                 'format': 'yyyy/mm/dd hh:ii P',
                 'autoclose': 'true',

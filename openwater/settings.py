@@ -149,8 +149,9 @@ INSTALLED_APPS = (
     'django_hstore',
     'rest_framework',
     'crispy_forms',
-    'floppyforms',
+#    'floppyforms',
     'datetimewidget',
+    'leaflet',
 
     'supplements',
     'observations',
