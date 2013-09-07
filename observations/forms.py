@@ -17,7 +17,6 @@ def get_new_obs_row(row_id=0):
     return Div(
         Field('obs_parameter', id='obs_parameter_{0}'.format(row_id)),
         Field('new_parameter', id='new_parameter_{0}'.format(row_id), type='hidden'),
-        Field('xxx', id='xxx_{0}'.format(row_id)),
         HTML('<p>Testing</p>'),
         css_class='obs-row',
         css_id='obs-row-{0}'.format(row_id))
@@ -45,13 +44,13 @@ class ParamRowForm(forms.Form):
 
 class MeasurementsForm(forms.ModelForm):
     """The main obs form which should corrale the various metrics."""
+    location = PointField()
     obs_parameter = forms.ChoiceField(
         choices=[('', 'Select one')] + [
             (p, p) for p in Parameter.objects.all().values_list(
                 'name', flat=True)
         ] + [('__NEW__', 'Add new...')]
     )
-    location = PointField()
     new_parameter = forms.CharField(required=False)
 
     class Meta:
