@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django.contrib.gis import admin
+from leaflet.admin import LeafletGeoAdmin
 from .models import Measurement, TestValue, Test, Parameter
 
 
 class TestValueInline(admin.TabularInline):
-    model=TestValue
+    model = TestValue
 
 admin.site.register(
-    Measurement, admin.GeoModelAdmin,
+    Measurement, LeafletGeoAdmin,
     inlines=(TestValueInline,),
     list_display=('reference_timestamp', 'location_reference', 'observer',
                   'source', '_observed_as_string'),

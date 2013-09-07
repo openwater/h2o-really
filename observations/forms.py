@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 
-import floppyforms as forms
+from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field
 from datetimewidget.widgets import DateTimeWidget
+from leaflet.forms.fields import PointField
 
 from .models import Measurement, Parameter
-
-
-class PointWidget(forms.gis.PointWidget, forms.gis.BaseGMapWidget):
-    pass
 
 
 def get_new_obs_row(row_id=0):
@@ -20,7 +17,6 @@ def get_new_obs_row(row_id=0):
     return Div(
         Field('obs_parameter', id='obs_parameter_{0}'.format(row_id)),
         Field('new_parameter', id='new_parameter_{0}'.format(row_id), type='hidden'),
-        Field('xxx', id='xxx_{0}'.format(row_id)),
         HTML('<p>Testing</p>'),
         css_class='obs-row',
         css_id='obs-row-{0}'.format(row_id))
@@ -48,6 +44,7 @@ class ParamRowForm(forms.Form):
 
 class MeasurementsForm(forms.ModelForm):
     """The main obs form which should corrale the various metrics."""
+    location = PointField()
     obs_parameter = forms.ChoiceField(
         choices=[('', 'Select one')] + [
             (p, p) for p in Parameter.objects.all().values_list(
@@ -59,9 +56,9 @@ class MeasurementsForm(forms.ModelForm):
     class Meta:
         model = Measurement
         widgets = {
-            'location': PointWidget(attrs={
-                'display_wkt': True,
-            }),
+#            'location': PointWidget(attrs={
+#                'display_wkt': True,
+#            }),
             'reference_timestamp': DateTimeWidget(options={
                 'format': 'yyyy/mm/dd hh:ii P',
                 'autoclose': 'true',
