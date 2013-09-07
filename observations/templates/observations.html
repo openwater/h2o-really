@@ -34,23 +34,33 @@
 
 {% block js %}
 <script type="text/javascript">
-//    function setMapPosition(position) {
-//        // TODO: this doesn't work, for some reason.. projection is right?
-//        map_location.map.setCenter(
-//            new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude),
-//            5
-//        );
-//    };
-//
-//    function getLocation() {
-//        if (navigator.geolocation) {
-//            navigator.geolocation.getCurrentPosition(setMapPosition);
-//        }
-//    };
-//
-//    $(document).ready(function() {
-//        getLocation();
-//    });
+    $(window).on('map:init', function (e) {
+        window.map = e.map;
+        $('#id_location_reference').bind('keyup', function(){
+            var val = $(this).val();
+            if (val.length < 3) return;
+            var url = "http://beta.geocoding.cloudmade.com/v3/{{ API_KEY }}/api/geo.location.search.2";
+            var bbox = map.getBounds().toBBoxString().split(',');
+            bbox = bbox[0] + ',' + bbox[1] + ';' + bbox[2] + ',' + bbox[3];
+            var data = {
+                format: 'json',
+                source: 'OSM',
+                enc: 'UTF-8',
+                limit: 10,
+                locale: 'en',
+                q: val,
+                bbox: bbox
+            };
+//            $.ajax(url, {
+//                data: data,
+//                dataType: 'jsonp',
+//                success: function(data) {
+//                    // TODO: Do something? API is pretty crap though. :(
+//                }
+//            });
+        });
+        map.locate({setView: true, maxZoom: 12});;
+    });
 
     function addObsRow() {
         // Add another observation row
