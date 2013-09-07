@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.views.generic.base import TemplateView, View
+from django.views.generic import CreateView
 from django.shortcuts import render
 
 from .models import Measurement
@@ -21,14 +22,14 @@ class MapView(TemplateView):
         return context
 
 
-class AddView(View):
+class AddView(CreateView):
     form_class = MeasurementsForm
-    initial = {}
     template_name = 'observations.html'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+    def get_context_data(self, **kwargs):
+        context = super(AddView, self).get_context_data(**kwargs)
+        context.update(API_KEY=settings.CLOUDMADE_API_KEY)
+        return context
 
 
 class ParamRowView(View):
