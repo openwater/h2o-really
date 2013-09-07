@@ -69,7 +69,7 @@ class Measurement(models.Model):
         verbose_name="Location name",
         max_length=200, null=True, blank=True,
         help_text="A friendly/reference name for this site")
-    observations = hstore.DictionaryField()
+    observations = hstore.DictionaryField(null=True, blank=True)
     parameters = models.ManyToManyField(Test, through='TestValue')
 
     observer = models.EmailField(
@@ -90,6 +90,11 @@ class Measurement(models.Model):
 
     def __unicode__(self):
         return u"Observation at {0}".format(self.created_timestamp)
+
+    def _observed_as_string(self):
+        """Returns a list of parameter names that were obeserved."""
+        return ", ".join([
+            test.parameter.name for test in self.parameters.all()])
 
 
 class TestValue(models.Model):
