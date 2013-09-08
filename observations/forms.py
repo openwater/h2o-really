@@ -7,7 +7,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field
 from datetimewidget.widgets import DateTimeWidget
-from leaflet.forms.fields import PointField
+from leaflet.forms.widgets import LeafletWidget
 
 from .models import Measurement, Parameter
 
@@ -44,7 +44,6 @@ class ParamRowForm(forms.Form):
 
 class MeasurementsForm(forms.ModelForm):
     """The main obs form which should corrale the various metrics."""
-    location = PointField()
     obs_parameter = forms.ChoiceField(
         choices=[('', 'Select one')] + [
             (p, p) for p in Parameter.objects.all().values_list(
@@ -56,9 +55,7 @@ class MeasurementsForm(forms.ModelForm):
     class Meta:
         model = Measurement
         widgets = {
-#            'location': PointWidget(attrs={
-#                'display_wkt': True,
-#            }),
+            'location': LeafletWidget(),
             'reference_timestamp': DateTimeWidget(options={
                 'format': 'yyyy/mm/dd hh:ii P',
                 'autoclose': 'true',
