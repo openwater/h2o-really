@@ -54,16 +54,87 @@
         map.locate({setView: true, maxZoom: 12});;
     });
 
+    function commitMeasurement() {
+        /* Send measurement basics, so we can start adding the testvalues */
+        var data = $('#add-observations-form').serialize();
+        $.ajax("{% url "observations-add" %}", {
+            data: data,
+            dataType: 'json',
+            type: 'POST',
+            success: function(data) {
+                $('#add-another-btn').data('obj-id', data.id);
+                $('p.text-error').remove();
+                addObsRow();
+                $('#obs-basics').fadeOut(400, function(){
+                    $('#param-rows').show();
+                    $('#to-part-2-btn').hide();
+                    $('#add-another-btn').show();
+                    $('#finish-btn').show();
+                });
+            },
+            error: function(data) {
+                var errors = $.parseJSON(data.responseText);
+                $.each(errors, function(key, value){
+                    $('#div_id_' + key).addClass('error').find('p.text-error').remove();
+                    for (var error in value) {
+                        $('#div_id_' + key + ' div.controls').append(
+                            '<p class="text-error"><strong>* ' + value[error] + 
+                            '</strong></p>'
+                        );
+                    }
+                });
+                $('div.form-actions').siblings('p.text-error').remove();
+                $('div.form-actions').before(
+                    '<p class="text-error">' + 
+                    'There were some missing data, see above!' +
+                    '</p>');
+                $('#to-part-2-btn').removeClass('btn-success').addClass('btn-warning');
+            }
+        });
+    }
+
     function addObsRow() {
         // Add another observation row
         var nextrow = $('#add-another-btn').data('nextrow');
-        $.get(
-            "{% url "observations-add-param" %}?nextrow=" + nextrow,
-            function(html) {
+        var id = $('#add-another-btn').data('obj-id');
+        $.ajax("{% url "observations-add-param" %}", {
+            data: {
+                nextrow: nextrow,
+                measurement: id,
+            },
+            success: function(html) {
                 $('#add-another-btn').data('nextrow', nextrow + 1);
                 $('#param-rows').append(html);
             }
-        );
+        });
     }
+
+    function commitNewParam(id, row_id, container_sel) {
+        /* Send a new param to the db, put a test-kit form in container for it. */
+        var name = $(id).val();
+        debugger;
+        fetchParamTests(name, row_id, container_sel)
+    }
+
+    function fetchParamTests(name, row_id, container_sel) {
+        /* Get existing tests for named param, return into container */
+        var url = "{% url "observations-add-test" %}";
+        $.ajax(url, {
+            data: {
+                param: name,
+                row_id: row_id
+            },
+            dataType: 'html',
+            success: function(data) {
+                $(container_sel).html(data);
+            },
+            error: function(e) {
+                $(container_sel).html("There was a problem: " + e);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+    })
 </script>
 {% endblock js %}

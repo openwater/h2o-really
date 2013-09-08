@@ -4,22 +4,51 @@ from datetime import date, timedelta
 
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.bootstrap import FormActions
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field
+from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
+from crispy_forms.layout import (
+    Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field)
 from datetimewidget.widgets import DateTimeWidget
 from leaflet.forms.widgets import LeafletWidget
 
-from .models import Measurement, Parameter
+from .models import Measurement, Parameter, Test
 
 
-def get_new_obs_row(row_id=0):
-    """Returns a set of fields that can be used in the measurements form."""
-    return Div(
-        Field('obs_parameter', id='obs_parameter_{0}'.format(row_id)),
-        Field('new_parameter', id='new_parameter_{0}'.format(row_id), type='hidden'),
-        HTML('<p>Testing</p>'),
-        css_class='obs-row',
-        css_id='obs-row-{0}'.format(row_id))
+class SelectOrCreateTestForm(forms.ModelForm):
+    """For a new Test kit, just the basics - we can fill out details later."""
+    test = forms.ChoiceField(choices=[])
+
+    class Meta:
+        model = Test
+        exclude = ('parameter', 'meta')
+
+    def __init__(self, *args, **kwargs):
+        param = kwargs.pop('parameter_name')
+        row_id = kwargs.pop('row_id')
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        self.helper.layout = Layout(
+            Field(
+                'test', id='id_test_{0}'.format(row_id),
+            ),
+            Div(
+                'name',
+                'description',
+                'vendor_or_authority',
+                'unit',
+                'test_type',
+                css_id='test-form-{0}'.format(row_id),
+                css_class='hide new-test',
+            )
+        )
+
+        super(SelectOrCreateTestForm, self).__init__(*args, **kwargs)
+
+        self.fields['test'].choices = [('', 'Select one')] + [
+            (t.id, str(t)) for t in Test.objects.filter(
+                parameter__name=param)
+        ] + [('__NEW__', 'Add new...')]
 
 
 class ParamRowForm(forms.Form):
@@ -28,30 +57,65 @@ class ParamRowForm(forms.Form):
         choices=[('', 'Select one')] + [
             (p, p) for p in Parameter.objects.all().values_list(
                 'name', flat=True)
-        ] + [('__NEW__', 'Add new...')]
+        ] + [('__NEW__', 'Add new...')],
+        label='Parameter',
     )
-    new_parameter = forms.CharField(required=False)
+    new_parameter = forms.CharField(
+        label="New parameter name",
+        required=False
+    )
+    measurement_id = forms.IntegerField()
+    value = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
-        self.helper.layout = Layout(
-            get_new_obs_row(kwargs.pop('row_id')),
-        )
+        row_id = kwargs.pop('row_id')
+        self.helper.layout = Layout(Div(
+            Div(
+                HTML("<h5>Basics</h5>"),
+                Field(
+                    'measurement_id',
+                    id='id_measurements_id_{0}'.format(row_id),
+                    type='hidden'
+                ),
+                Field('obs_parameter', id='id_obs_parameter_{0}'.format(row_id)),
+                Div(
+                    FieldWithButtons(
+                        Field(
+                            'new_parameter',
+                            id='id_new_parameter_{0}'.format(row_id)
+                        ),
+                        StrictButton(
+                            "Add",
+                            onclick=(
+                                "commitNewParam("
+                                "'#id_new_parameter_{0}',"
+                                "{0},"
+                                "'#kit-form-{0} div.kit-container')".format(
+                                    row_id))
+                        ),
+                    ),
+                    css_class='hide new-parameter'
+                ),
+                Field('value', id='id_value_{0}'.format(row_id)),
+                css_class='param-row span6',
+                css_id='param-form-{0}'.format(row_id)
+            ),
+            Div(
+                HTML("<h5>Test specifics</h5>"),
+                Div(css_class='kit-container'),
+                css_class='kit-row span6',
+                css_id='kit-form-{0}'.format(row_id),
+            ),
+            css_class='row-fluid'
+        ))
         super(ParamRowForm, self).__init__(*args, **kwargs)
 
 
 class MeasurementsForm(forms.ModelForm):
     """The main obs form which should corrale the various metrics."""
-    obs_parameter = forms.ChoiceField(
-        choices=[('', 'Select one')] + [
-            (p, p) for p in Parameter.objects.all().values_list(
-                'name', flat=True)
-        ] + [('__NEW__', 'Add new...')]
-    )
-    new_parameter = forms.CharField(required=False)
-
     class Meta:
         model = Measurement
         widgets = {
@@ -66,7 +130,7 @@ class MeasurementsForm(forms.ModelForm):
                 'todayHighlight': 'true',
             }),
         }
-        exclude = ('source',)
+        exclude = ('source', 'observations', 'parameters')
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -83,20 +147,36 @@ class MeasurementsForm(forms.ModelForm):
                 'location',
                 'reference_timestamp',
                 'observer',
+                css_id='obs-basics',
             ),
             Fieldset(
                 'Observed indicators',
-                get_new_obs_row(),
+                HTML("<p>Great! Now we know where and when you made the "
+                     "observations, we need to know what you found out.</p>"
+                     "<p>Below, choose the type of measurement you made (the"
+                     " '<strong>parameter</strong>') and how you made the "
+                     "measurement (the '<strong>test</strong>').</p>"
+                     "<p>If a parameter or test is missing, you can add it "
+                     "too. We may follow up to get some more details about the"
+                     " test used, since there are so many available.</p>"),
                 css_id='param-rows',
+                css_class='hide',
             ),
             FormActions(
+                StrictButton(
+                    'Next', css_class="btn-success",
+                    css_id='to-part-2-btn', onclick='commitMeasurement()',
+                ),
                 Button(
                     'another', 'Add another parameter',
                     css_id='add-another-btn', data_nextrow='1',
-                    onclick='addObsRow()'),
+                    onclick='addObsRow();',
+                    css_class='hide'
+                ),
                 Submit(
-                    'submit', 'Submit', css_class='button white',
-                    onclick='alert("Sorry... we\'re not quite ready yet!")'
+                    'submit', 'Submit', css_class='button white hide',
+                    css_id='finish-btn',
+#                    onclick='alert("Sorry... we\'re not quite ready yet!")'
                 ),
             )
         )

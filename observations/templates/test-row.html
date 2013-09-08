@@ -1,0 +1,12 @@
+{% load crispy_forms_tags %}
+{% crispy form %}
+<script type="text/javascript">
+    $('#id_test_{{ row_id }}').change(function(e) {
+        var val = $(e.target).val();
+        if (val == '__NEW__') {
+            $('#test-form-{{ row_id }}').show();
+        } else {
+            $('#test-form-{{ row_id }}').hide();
+        }
+    });
+</script>
