@@ -13,4 +13,4 @@ django-filter==0.7
 django-crispy-forms==1.3.2
 django-floppyforms==1.1
 django-datetime-widget==0.6
-https://github.com/stringfellow/django-leaflet/archive/bugfix/missing-forms.zip#egg=leaflet
+https://github.com/makinacorpus/django-leaflet/archive/master.zip
