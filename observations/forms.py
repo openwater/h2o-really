@@ -6,8 +6,7 @@ from django import forms
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
-from crispy_forms.layout import (
-    Layout, Fieldset, Submit, Div, HTML, Button, Field)
+from crispy_forms.layout import Layout, Fieldset, Div, HTML, Button, Field
 from datetimewidget.widgets import DateTimeWidget
 from leaflet.forms.widgets import LeafletWidget
 
@@ -154,8 +153,6 @@ class MeasurementsForm(forms.ModelForm):
         self.helper.form_id = "add-observations-form"
         self.helper.form_class = 'form-horizontal'
         self.helper.layout = Layout(
-            HTML("<h1>This form doesn't work yet!</h1>"),
-            HTML("<p>We're still building this bit. Sorry!"),
             Fieldset(
                 'Where, when & who',
                 'location_reference',
