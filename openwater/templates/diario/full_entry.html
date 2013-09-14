@@ -1,10 +1,20 @@
-<div>
-  <h3>{{ entry.title }}</h3>
+{% load markdown_deux_tags %}
+  <h2>{{ entry.title }}</h2>
 
-  {{ entry.body|linebreaks|safe }}
+  <div class="row-fluid">
+      <div class="span{% if entry.image %}6{% else %}12{% endif %}">
+{% markdown %}
+{{ entry.body }}
+{% endmarkdown %}
+      </div>
+      {% if entry.image %}
+      <div class="span6">
+          <img src="{{ entry.image.url }}" />
+      </div>
+      {% endif %}
+  </div>
 
   <p><small>
     By <a href="{% url 'blog:user' entry.user.username %}">{{ entry.user }}</a>
     at <a href="{{ entry.get_absolute_url }}">{{ entry.time_published }}</a>
   </small></p>
-</div>

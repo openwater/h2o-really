@@ -155,6 +155,7 @@ INSTALLED_APPS = (
 
     'diario',
     'taggit',
+    'markdown_deux',
 
     'supplements',
     'observations',
