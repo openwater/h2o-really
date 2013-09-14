@@ -1,0 +1,10 @@
+<div>
+  <h3>{{ entry.title }}</h3>
+
+  {{ entry.body|linebreaks|safe }}
+
+  <p><small>
+    By <a href="{% url 'blog:user' entry.user.username %}">{{ entry.user }}</a>
+    at <a href="{{ entry.get_absolute_url }}">{{ entry.time_published }}</a>
+  </small></p>
+</div>

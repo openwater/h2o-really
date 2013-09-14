@@ -1,0 +1,20 @@
+{% extends "diario/entry_archive.html" %}
+
+{% block title %}Archive | {{ year.year}} {% endblock  %}
+
+{% block header %}<h1>Archive</h1><h2>{{ year.year}}</h2>{% endblock %}
+
+{% block content %}
+<div class="span12">
+  {% if date_list %}
+    <ul>
+      {% for date in date_list %}
+        <li><a href="{% url 'blog:archive-month' date.year date|date:'m' %}">
+          {{ date|date:"F" }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p><em>No entries.</em></p>
+  {% endif %}
+</div>
+{% endblock %}

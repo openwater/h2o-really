@@ -86,8 +86,8 @@
               <li{% if name == "report" %} class="active"{% endif %}>
                 <a href="#">Report</a></li>
               <li class="nav-header">Meta</li>
-              <li{% if name == "about" %} class="active"{% endif %}>
-                <a href="#">About</a></li>
+              <li{% if request.resolver_match.namespace == "blog" %} class="active"{% endif %}>
+              <a href="{% url "blog:entry-list" %}">News</a></li>
               <li{% if name == "supplements-sources" %} class="active"{% endif %}>
               <a href="{% url 'supplements-sources' %}">
                   Data sources, attributions</a></li>

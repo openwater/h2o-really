@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Archive{% endblock  %}
+
+{% block header %}<h1>Archive</h1>{% endblock %}
+
+{% block content %}
+<div class="span12">
+  {% if date_list %}
+    <ul>
+      {% for date in date_list %}
+        <li><a href="{% url 'blog:archive-year' date.year %}">
+          {{ date.year }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p><em>No entries.</em></p>
+  {% endif %}
+</div>
+{% endblock %}

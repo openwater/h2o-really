@@ -15,3 +15,5 @@ django-floppyforms==1.1
 django-datetime-widget==0.6
 https://github.com/makinacorpus/django-leaflet/archive/master.zip
 requests==1.2.3
+-e git+https://bitbucket.org/semente/django-diario.git@593a15b121d696d0c041f7c95d9cbab9e90ffbe4#egg=diario
+Pillow==2.1.0

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Blog{% endblock %}
+
+{% block header %}<h1>News</h1>{% endblock %}
+
+{% block content %}
+<div class="span12">
+  {% for entry in entry_list %}
+    {% include "diario/full_entry.html" %}
+  {% empty %}
+    <p>Write your first entry at <a href="/admin/">/admin/</a>.</p>
+  {% endfor %}
+</div>
+{% endblock %}

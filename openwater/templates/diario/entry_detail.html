@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Blog | {{ entry.title }}{% endblock %}
+
+{% block header %}<h1>News</h1>{% endblock %}
+
+{% block content %}
+  {% include "diario/full_entry.html" %}
+{% endblock %}

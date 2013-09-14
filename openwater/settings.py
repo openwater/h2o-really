@@ -143,17 +143,18 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+
     'south',
     'django_hstore',
+
     'rest_framework',
     'crispy_forms',
-#    'floppyforms',
     'datetimewidget',
     'leaflet',
+
+    'diario',
+    'taggit',
 
     'supplements',
     'observations',
