@@ -10,9 +10,12 @@ class DictionaryField(serializers.Field):
     def to_native(self, obj):
         # HStore doesn't allow nested dictionaries, so we parse the escaped
         # string values to JSON (assuming that's what they in fact are.
-        ret = {
-            k: json.loads(v) for k, v in obj.items()
-        }
+        if obj:
+            ret = {
+                k: json.loads(v) for k, v in obj.items()
+            }
+        else:
+            ret = {}
         return ret
 
 
