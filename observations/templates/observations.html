@@ -70,6 +70,7 @@
                     $('#to-part-2-btn').hide();
                     $('#add-another-btn').show();
                     $('#finish-btn').show();
+                    $('#obs-basics').remove();
                 });
             },
             error: function(data) {
@@ -93,10 +94,34 @@
         });
     }
 
-    function addObsRow() {
-        // Add another observation row
-        var nextrow = $('#add-another-btn').data('nextrow');
-        var id = $('#add-another-btn').data('obj-id');
+    function commitTestValue(nextrow, callback) {
+        // Send a test value to this measurement.
+        var data = $('#add-observations-form').serialize();
+        $.ajax("{% url "observations-add-test" %}", {
+            data: data,
+            type: 'POST',
+            success: function(data) {
+                if ($('#added-test-values').length == 0) {
+                    $('#test-value-row-' + (nextrow - 1)).html(
+                        $('<div class="span12">' +
+                          '<table id="added-test-values" class="table table-striped table-bordered">' +
+                          '<thead><tr>' + 
+                          '<th>Parameter</th><th>Value</th><th>Unit</th><th>Test</th>' +
+                          '<th>Delete</th>' + 
+                          '</tr></thead><tbody></tbody></table></div>'));
+                } else {
+                    $('#test-value-row-' + (nextrow - 1)).remove();
+                }
+                $('#added-test-values tbody').append(data);
+                if (callback){ callback() };
+            },
+            error: function(x, y, z) {
+                debugger;
+            }
+        });
+    }
+
+    function createObsRow(nextrow, id) {
         $.ajax("{% url "observations-add-param" %}", {
             data: {
                 nextrow: nextrow,
@@ -107,6 +132,20 @@
                 $('#param-rows').append(html);
             }
         });
+    }
+
+    function addObsRow() {
+        // Add another observation row
+        var nextrow = $('#add-another-btn').data('nextrow');
+        var id = $('#add-another-btn').data('obj-id');
+        if (nextrow != 1) {  // then we should commit this test value
+            commitTestValue(
+                nextrow,
+                function() { createObsRow(nextrow, id) }
+            );
+        } else {
+            createObsRow(nextrow, id);
+        }
     }
 
     function commitNewParam(id, row_id, container_sel) {
@@ -153,7 +192,5 @@
         });
     }
 
-    $(document).ready(function() {
-    })
 </script>
 {% endblock js %}

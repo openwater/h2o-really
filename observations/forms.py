@@ -6,11 +6,17 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 from crispy_forms.layout import (
-    Layout, Fieldset, ButtonHolder, Submit, Div, HTML, Button, Field)
+    Layout, Fieldset, Submit, Div, HTML, Button, Field)
 from datetimewidget.widgets import DateTimeWidget
 from leaflet.forms.widgets import LeafletWidget
 
-from .models import Measurement, Parameter, Test
+from .models import Measurement, Parameter, Test, TestValue
+
+
+class TestValueForm(forms.ModelForm):
+
+    class Meta:
+        model = TestValue
 
 
 class SelectOrCreateTestForm(forms.ModelForm):
@@ -60,7 +66,7 @@ class ParamRowForm(forms.Form):
         label="New parameter name",
         required=False
     )
-    measurement_id = forms.IntegerField()
+    measurement = forms.IntegerField()
     value = forms.CharField()
 
     def __init__(self, *args, **kwargs):
@@ -72,11 +78,14 @@ class ParamRowForm(forms.Form):
             Div(
                 HTML("<h5>Basics</h5>"),
                 Field(
-                    'measurement_id',
-                    id='id_measurements_id_{0}'.format(row_id),
+                    'measurement',
+                    id='id_measurements_{0}'.format(row_id),
                     type='hidden'
                 ),
-                Field('obs_parameter', id='id_obs_parameter_{0}'.format(row_id)),
+                Field(
+                    'obs_parameter',
+                    id='id_obs_parameter_{0}'.format(row_id)
+                ),
                 Div(
                     FieldWithButtons(
                         Field(
@@ -105,7 +114,8 @@ class ParamRowForm(forms.Form):
                 css_class='kit-row span6',
                 css_id='kit-form-{0}'.format(row_id),
             ),
-            css_class='row-fluid'
+            css_class='row-fluid',
+            css_id='test-value-row-{0}'.format(row_id),
         ))
         super(ParamRowForm, self).__init__(*args, **kwargs)
         self.fields['obs_parameter'].choices = [('', 'Select one')] + [

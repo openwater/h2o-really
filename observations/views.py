@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from .models import Measurement, Parameter
-from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm
+from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm, TestValueForm
 from .filters import MeasurementFilter
 
 
@@ -51,9 +51,9 @@ class ParamRowView(View):
 
     def get(self, request, *args, **kwargs):
         row_id = request.GET.get('nextrow')
-        measurement_id = request.GET.get('measurement')
+        measurement = request.GET.get('measurement')
         initial = dict(self.initial)
-        initial.update({'measurement_id': measurement_id})
+        initial.update({'measurement': measurement})
         form = self.form_class(initial=initial, row_id=row_id)
         return render(
             request, self.template_name, {'form': form, 'row_id': row_id})
@@ -88,3 +88,16 @@ class TestRowView(View):
             initial=self.initial, parameter_name=param, row_id=row_id)
         return render(
             request, self.template_name, {'form': form, 'row_id': row_id})
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('test'):
+            form_class = TestValueForm
+        else:
+            form_class = self.form_class
+        form = form_class(request.POST)
+        if form.is_valid():
+            testvalue = form.save()
+            return render(
+                request, 'test-value-row.html', {'testvalue': testvalue})
+
+        return HttpResponse("ok")
