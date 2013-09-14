@@ -6,7 +6,7 @@ from django.views.generic import CreateView
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Measurement
+from .models import Measurement, Parameter
 from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm
 from .filters import MeasurementFilter
 
@@ -57,6 +57,21 @@ class ParamRowView(View):
         form = self.form_class(initial=initial, row_id=row_id)
         return render(
             request, self.template_name, {'form': form, 'row_id': row_id})
+
+    def post(self, request, *args, **kwargs):
+        try:
+            p = Parameter.objects.get(name__iexact=request.POST.get('name'))
+            # correct the user's input
+            return HttpResponse(
+                json.dumps({'message': 'exists', 'name': p.name}),
+                mimetype='application/json'
+            )
+        except Parameter.DoesNotExist:
+            Parameter.objects.create(name=request.POST.get('name'))
+            return HttpResponse(
+                json.dumps({'message': 'ok'}),
+                mimetype='application/json'
+            )
 
 
 class TestRowView(View):

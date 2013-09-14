@@ -44,7 +44,6 @@ class SelectOrCreateTestForm(forms.ModelForm):
         )
 
         super(SelectOrCreateTestForm, self).__init__(*args, **kwargs)
-
         self.fields['test'].choices = [('', 'Select one')] + [
             (t.id, str(t)) for t in Test.objects.filter(
                 parameter__name=param)
@@ -54,10 +53,7 @@ class SelectOrCreateTestForm(forms.ModelForm):
 class ParamRowForm(forms.Form):
     """Just a single obs row."""
     obs_parameter = forms.ChoiceField(
-        choices=[('', 'Select one')] + [
-            (p, p) for p in Parameter.objects.all().values_list(
-                'name', flat=True)
-        ] + [('__NEW__', 'Add new...')],
+        choices=[],
         label='Parameter',
     )
     new_parameter = forms.CharField(
@@ -112,6 +108,10 @@ class ParamRowForm(forms.Form):
             css_class='row-fluid'
         ))
         super(ParamRowForm, self).__init__(*args, **kwargs)
+        self.fields['obs_parameter'].choices = [('', 'Select one')] + [
+            (p, p) for p in Parameter.objects.all().values_list(
+                'name', flat=True)
+        ] + [('__NEW__', 'Add new...')]
 
 
 class MeasurementsForm(forms.ModelForm):

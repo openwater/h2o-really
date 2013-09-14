@@ -112,8 +112,27 @@
     function commitNewParam(id, row_id, container_sel) {
         /* Send a new param to the db, put a test-kit form in container for it. */
         var name = $(id).val();
-        debugger;
-        fetchParamTests(name, row_id, container_sel)
+        var selecter = $('#id_obs_parameter_' + row_id);
+        $.ajax("{% url "observations-add-param" %}", {
+            data: {
+                name: name,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                if (data.message == 'exists') {
+                    selecter.val(data.name).change();
+                    name = data.name;
+                } else {
+                    $('<option value="' + name + '">' + name + '</option>').appendTo(selecter);
+                    selecter.val(name).change();
+                }
+                fetchParamTests(name, row_id, container_sel)
+            },
+            error: function(data, x, y){
+            }
+        });
     }
 
     function fetchParamTests(name, row_id, container_sel) {
