@@ -1,2 +1,17 @@
 {% load crispy_forms_tags %}
 {% crispy form %}
+<script type="text/javascript">
+    $('#{{ form.helper.layout.0.0.css_id }}').find('select').change(function(e) {
+        var val = $(e.target).val();
+        if (val == '__NEW__') {
+            $('#{{ form.helper.layout.0.0.css_id }} div.new-parameter').show();
+        } else {
+            $('#{{ form.helper.layout.0.0.css_id }} div.new-parameter').hide();
+            fetchParamTests(
+                val,
+                {{ row_id }},
+                '#{{ form.helper.layout.0.1.css_id }} div.kit-container'
+            );
+        }
+    });
+</script>

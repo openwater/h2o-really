@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Measurement{% endblock %}
+
+{% block extra_head %}
+<style type="text/css">
+  html { height: 100%; }
+  body { height: 100%; }
+  #map-canvas { height: 400px; width: 100%; }
+</style>
+<link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.css' %}" />
+<!--[if lte IE 8]>
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.ie.css' %}" />
+<![endif]-->
+<link rel="stylesheet" href="{% static 'observations/css/map.css' %}" />
+
+<script type="text/javascript" src="{% static 'leaflet-0.6.4/leaflet.js' %}"></script>
+{{ filter.form.media }}
+</script>
+{% endblock %}
+{% block header %}
+    <h2>
+        {% if object.location_reference %}{{ object.location_reference }},{% endif %}
+        {{ object.reference_timestamp|default:object.created_timestamp }}
+    </h2>
+    {% if object.source %}
+    <h3>From: <a href="{{ object.source.url }}">{{ object.source }}</a></h3>
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="span6">
+            <div id="map-canvas"></div>
+        </div>
+        <div class="span6">
+            <table id="added-test-values" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                        <th>Unit</th>
+                        <th>Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for testvalue in object.testvalue_set.all %}
+                        <tr>
+                            <td>{{ testvalue.test.parameter.name }}</td>
+                            <td>{{ testvalue.value }}</td>
+                            <td>{{ testvalue.test.unit }}</td>
+                            <td>{{ testvalue.test }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        var map = L.map('map-canvas').setView(
+            [{{ object.location.y }},{{ object.location.x }}],
+            13
+        );
+        L.tileLayer(
+            'http://{s}.tile.cloudmade.com/{{ API_KEY }}/997/256/{z}/{x}/{y}.png',
+            {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                maxZoom: 18
+            }
+        ).addTo(map);
+        L.marker([{{ object.location.y }},{{ object.location.x }}]).addTo(map);
+    });
+</script>
+{% endblock %}

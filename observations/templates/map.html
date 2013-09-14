@@ -44,6 +44,13 @@
 {% block js %}
 <script type="text/javascript">
     var API_ROOT = '{% url "observations_api_measurements" %}';
+    var detailUrl = '{% url "observations-detail" pk="000" %}';
+
+    function onEachFeature(feature, layer) {
+        layer.on('click', function (e) {
+            location = detailUrl.replace('000', feature.properties.id);
+        });
+    }
 
     $(document).ready(function() {
         var map = L.map('map-canvas').setView([55, -4], 6);
@@ -63,7 +70,9 @@
             $('#meta').html('Loading...');
             markers.clearLayers();
             $.getJSON(API_ROOT + '?' + $('#map-filter').serialize(), function(data) {
-                var geoJsonLayer = L.geoJson(data.results);
+                var geoJsonLayer = L.geoJson(data.results, {
+                    onEachFeature: onEachFeature
+                });
                 markers.addLayer(geoJsonLayer);
                 map.addLayer(markers);
 
