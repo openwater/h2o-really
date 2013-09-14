@@ -3,6 +3,7 @@
 from datetime import date, timedelta
 
 from django import forms
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import FormActions, FieldWithButtons, StrictButton
 from crispy_forms.layout import (
@@ -21,39 +22,44 @@ class TestValueForm(forms.ModelForm):
 
 class SelectOrCreateTestForm(forms.ModelForm):
     """For a new Test kit, just the basics - we can fill out details later."""
-    test = forms.ChoiceField(choices=[])
+    test = forms.ChoiceField(choices=[], required=False)
 
     class Meta:
         model = Test
         exclude = ('parameter', 'meta')
 
     def __init__(self, *args, **kwargs):
-        param = kwargs.pop('parameter_name')
-        row_id = kwargs.pop('row_id')
+        try:
+            param = kwargs.pop('parameter_name')
+            row_id = kwargs.pop('row_id')
 
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.disable_csrf = True
-        self.helper.layout = Layout(
-            Field(
-                'test', id='id_test_{0}'.format(row_id),
-            ),
-            Div(
-                'name',
-                'description',
-                'vendor_or_authority',
-                'unit',
-                'test_type',
-                css_id='test-form-{0}'.format(row_id),
-                css_class='hide new-test',
+            self.helper = FormHelper()
+            self.helper.form_tag = False
+            self.helper.disable_csrf = True
+            self.helper.layout = Layout(
+                Field(
+                    'test', id='id_test_{0}'.format(row_id),
+                ),
+                Div(
+                    'name',
+                    'description',
+                    'vendor_or_authority',
+                    'unit',
+                    'test_type',
+                    css_id='test-form-{0}'.format(row_id),
+                    css_class='hide new-test',
+                )
             )
-        )
 
-        super(SelectOrCreateTestForm, self).__init__(*args, **kwargs)
-        self.fields['test'].choices = [('', 'Select one')] + [
-            (t.id, str(t)) for t in Test.objects.filter(
-                parameter__name=param)
-        ] + [('__NEW__', 'Add new...')]
+            super(SelectOrCreateTestForm, self).__init__(*args, **kwargs)
+            self.fields['test'].choices = [('', 'Select one')] + [
+                (t.id, str(t)) for t in Test.objects.filter(
+                    parameter__name=param)
+            ] + [('__NEW__', 'Add new...')]
+        except KeyError:
+            # this is not a select, it must be a create call.
+            super(SelectOrCreateTestForm, self).__init__(*args, **kwargs)
+            self.fields['test'].choices = [('__NEW__', 'Add new...')]
 
 
 class ParamRowForm(forms.Form):
@@ -144,7 +150,6 @@ class MeasurementsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
-        self.helper.form_method = 'POST'
         self.helper.form_tag = True
         self.helper.form_id = "add-observations-form"
         self.helper.form_class = 'form-horizontal'
@@ -183,10 +188,10 @@ class MeasurementsForm(forms.ModelForm):
                     onclick='addObsRow();',
                     css_class='hide'
                 ),
-                Submit(
-                    'submit', 'Submit', css_class='button white hide',
+                StrictButton(
+                    'Done', css_class='btn-success hide',
                     css_id='finish-btn',
-#                    onclick='alert("Sorry... we\'re not quite ready yet!")'
+                    onclick='finishUp();'
                 ),
             )
         )

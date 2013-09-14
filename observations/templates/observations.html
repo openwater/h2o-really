@@ -97,6 +97,7 @@
     function commitTestValue(nextrow, callback) {
         // Send a test value to this measurement.
         var data = $('#add-observations-form').serialize();
+        var row_id = nextrow - 1;
         $.ajax("{% url "observations-add-test" %}", {
             data: data,
             type: 'POST',
@@ -110,13 +111,28 @@
                           '<th>Delete</th>' + 
                           '</tr></thead><tbody></tbody></table></div>'));
                 } else {
-                    $('#test-value-row-' + (nextrow - 1)).remove();
+                    $('#test-value-row-' + row_id).remove();
                 }
                 $('#added-test-values tbody').append(data);
                 if (callback){ callback() };
             },
-            error: function(x, y, z) {
-                debugger;
+            error: function(response, y, z) {
+                $('#test-value-row-' + row_id).find('p.text-error').remove();
+                $('#test-value-row-' + row_id).find('.error').removeClass('error');
+                var errors = $.parseJSON(response.responseText);
+                $.each(errors, function(key, value){
+                    $('#test-value-row-' + row_id)
+                        .find('#div_id_' + key).addClass('error')
+                        .find('p.text-error').remove();
+                    for (var error in value) {
+                        $('#test-value-row-' + row_id)
+                            .find('#div_id_' + key + ' div.controls')
+                            .append(
+                                '<p class="text-error"><strong>* ' + value[error] + 
+                                '</strong></p>'
+                            );
+                    }
+                });
             }
         });
     }
@@ -146,6 +162,20 @@
         } else {
             createObsRow(nextrow, id);
         }
+    }
+
+    function finishUp() {
+        // commit the last parameter and redirect to the page for this obs
+        var nextrow = $('#add-another-btn').data('nextrow');
+        var id = $('#add-another-btn').data('obj-id');
+        commitTestValue(
+            nextrow,
+            function() { 
+                var url = "{% url "observations-detail" pk="000" %}";
+                url = url.replace('000', id);
+                location = url;
+            }
+        );
     }
 
     function commitNewParam(id, row_id, container_sel) {

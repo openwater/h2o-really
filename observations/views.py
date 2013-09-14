@@ -2,13 +2,23 @@ import json
 
 from django.conf import settings
 from django.views.generic.base import TemplateView, View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Measurement, Parameter
+from .models import Measurement, Parameter, TestValue
 from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm, TestValueForm
 from .filters import MeasurementFilter
+
+
+class MeasurementView(DetailView):
+    template_name = 'observation.html'
+    model = Measurement
+
+    def get_context_data(self, **kwargs):
+        context = super(MeasurementView, self).get_context_data(**kwargs)
+        context.update(API_KEY=settings.CLOUDMADE_API_KEY)
+        return context
 
 
 class MapView(TemplateView):
@@ -90,14 +100,42 @@ class TestRowView(View):
             request, self.template_name, {'form': form, 'row_id': row_id})
 
     def post(self, request, *args, **kwargs):
-        if request.POST.get('test'):
+        # fail fast if there is not even a value
+        if request.POST.get('value').strip() == '':
+            return HttpResponse(json.dumps({
+                'value': ["This field is required."]
+            }), status=400)
+        # fail fast if there is not even a param
+        if request.POST.get('obs_parameter').strip() == '':
+            return HttpResponse(json.dumps({
+                'obs_parameter': ["This field is required."]
+            }), status=400)
+
+        # OK, is this a new test or an old one?
+        if request.POST.get('test') != '__NEW__':
+            _type = 'test-value'
             form_class = TestValueForm
-        else:
+        else:  # old one
+            _type = 'test'
             form_class = self.form_class
+
         form = form_class(request.POST)
+
         if form.is_valid():
-            testvalue = form.save()
+            if _type == 'test-value':
+                testvalue = form.save()
+            else:
+                test = form.save(commit=False)
+                test.parameter = Parameter.objects.get(
+                    name__iexact=request.POST.get('obs_parameter'))
+                test.save()
+                # TODO: value validation here, somehow, against test meta.
+                testvalue = TestValue.objects.create(
+                    test=test,
+                    measurement_id=request.POST.get('measurement'),
+                    value=request.POST.get('value')
+                )
             return render(
                 request, 'test-value-row.html', {'testvalue': testvalue})
-
-        return HttpResponse("ok")
+        else:
+            return HttpResponse(json.dumps(form.errors), status=400)
