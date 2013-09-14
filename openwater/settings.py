@@ -4,6 +4,8 @@ import os
 APP_ROOT = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.join(APP_ROOT, '../'))
 
+JAVA_API_URL = "http://api.h2o-really.co.uk/"
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
