@@ -19,11 +19,13 @@
 </script>
 {% endblock %}
 {% block header %}
-    <h1>Measurement</h1>
     <h2>
         {% if object.location_reference %}{{ object.location_reference }},{% endif %}
         {{ object.reference_timestamp|default:object.created_timestamp }}
     </h2>
+    {% if object.source %}
+    <h3>From: <a href="{{ object.source.url }}">{{ object.source }}</a></h3>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="row-fluid">
