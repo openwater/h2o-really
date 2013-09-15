@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+{% load markdown_deux_tags %}
 {% block super_title %}H₂O Really?{% endblock %}
 {% block header %}
     <h1>H<sub>2</sub>O Really?</h1>
-    <h2>Water quality observations, unleashed!</h2>
+    <h2>Potable &amp; environmental water data for all.</h2>
 {% endblock %}
 {% block content %}
-    <div class="span12">
+    <div class="span8">
+        <h3>What's this all about?</h3>
         <p>
             Water quality isn't something we tend to think about, except when
             furiously de-scaling the kettle or dishwasher, but it's <strong>
@@ -18,15 +20,48 @@
             changes. Even when on mains water, there can be contamination, and
             this data isn't particularly visible, or updateable by the public.
         </p>
+        <h3>What do you mean "Quality"?</h3>
         <p>
-            <strong>H2O Really?</strong> is here to provide an open data
-            service through which water quality can be recorded, monitored, and
-            reported on by anyone, with any available technology. We want all
-            types of water quality indicators to be recorded, but even if you
-            can only test the pH or make a casual observation about the water
-            quality around you, we want to know about it!
+            <strong>H<sub>2</sub>O Really?</strong> is here to provide an open
+            data service through which water quality can be recorded,
+            monitored, and reported on by anyone, with any available
+            technology. We want all types of water quality indicators to be
+            recorded, but even if you can only test the pH or make a casual
+            observation about the water quality around you, we want to know
+            about it!
         </p>
+        <h3>Quality of what?</h3>
+        <p>
+            Obviously we all care about the quality of the water coming out of
+            our taps, but this site is not just for drinking water. We want to
+            know about the water in the pond at the end of your garden, the
+            water in the stream that flows through the park, the wood,
+            wherever!
+        </p>
+        <h3>Why?</h3>
+        <p>
+            "Knowledge is power", so they say. Well, data is knowledge, of a
+            sort. So the more data everyone has about the water around them,
+            the more 'power' one has to act on issues that may arise. Not to
+            mention, <strong>science is fun</strong>!
+        </p>
+        <div class="well">
+            <h4>News</h4>
+            {% for entry in entry_list %}
+              <div>
+                  <h5>{{ entry.title }}</h5>
+{% markdown %}
+{{ entry.body|truncatewords:50 }}
+{% endmarkdown %}<a href="{{ entry.get_absolute_url }}">Continue reading&hellip;</a>
+                  </div>
+            {% endfor %}
+        </div>
     </div><!--/span-->
+    <div class="span4">
+        <a class="twitter-timeline" href="https://twitter.com/H2OReally" data-widget-id="379269796728025088">Tweets</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+
 {% endblock content %}
 
 
