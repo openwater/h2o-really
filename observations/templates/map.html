@@ -6,7 +6,7 @@
 <style type="text/css">
   html { height: 100%; }
   body { height: 100%; }
-  #map-canvas { height: 800px; width: 900px; }
+  #map-canvas { height: 600px; width: 100%; }
 </style>
 <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.css' %}" />
 <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.css' %}" />
@@ -20,25 +20,26 @@
 <script type="text/javascript" src="{% static 'leaflet-0.6.4/leaflet.js' %}"></script>
 <script type="text/javascript" src="{% static 'leaflet-0.6.4/plugins/leaflet.markercluster.js' %}"></script>
 {{ filter.form.media }}
-</script>
 {% endblock %}
 {% block header %}
-    <h1>Map</h1>
-    <h2></h2>
+    <h1>Map & Download</h1>
 {% endblock %}
 {% block content %}
-    <div class="span12">
+    <div class="span8">
         <div id="map-canvas"></div>
+    </div>
+    <div class="span4">
         <form id="map-filter">
             <p>
-                <label for="page_size">Max results:</label>
+                <label for="page_size">Maximum number of results:</label>
                 <input type="text" id="id_page_size" name="page_size" value="5000" />
             </p>
             {{ filter.form.as_p }}
-            <input type="submit" />
-            <input type="reset" />
+            <input type="submit" class="button btn btn-primary" id="updateBtn" value="Update" /> 
         </form>
-        <span id="meta"></span>
+        <div class="well">
+            <span id="meta" class="muted"></span>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
@@ -68,6 +69,7 @@
 
         var updateMap = function() {
             $('#meta').html('Loading...');
+            $('#updateBtn').attr('disabled', 'disabled');
             markers.clearLayers();
             $.getJSON(API_ROOT + '?' + $('#map-filter').serialize(), function(data) {
                 var geoJsonLayer = L.geoJson(data.results, {
@@ -103,6 +105,7 @@
                 }
 
                 $('#meta').html(msg + '.');
+                $('#updateBtn').removeAttr("disabled");
             });
         };
 

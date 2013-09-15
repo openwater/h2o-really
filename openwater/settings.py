@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'datetimewidget',
     'leaflet',
+    'chosen',
 
     'diario',
     'taggit',

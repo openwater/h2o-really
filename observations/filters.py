@@ -2,6 +2,7 @@ from datetime import timedelta, date
 import django_filters
 
 from datetimewidget.widgets import DateTimeWidget
+from chosen.widgets import ChosenSelectMultiple
 
 from .models import Measurement, Parameter
 
@@ -37,7 +38,17 @@ class MeasurementFilter(django_filters.FilterSet):
                 'startView': 3,
             })
     )
+    parameter = django_filters.ModelMultipleChoiceFilter(
+        label='Parameters',
+        name='parameters__parameter', lookup_type='in',
+        queryset=Parameter.objects.all(),
+        widget=ChosenSelectMultiple,
+    )
 
     class Meta:
         model = Measurement
-        fields = ['from_date', 'to_date', 'parameters']
+        fields = ['from_date', 'to_date']
+
+    def __init__(self, *args, **kwargs):
+        super(MeasurementFilter, self).__init__(*args, **kwargs)
+        self.filters['parameter'].field.help_text = ""
