@@ -83,8 +83,8 @@
               <li class="nav-header">Use data</li>
               <li{% if name == "observations-map" %} class="active"{% endif %}>
                   <a href="{% url 'observations-map' %}">Map</a></li>
-              <li{% if name == "report" %} class="active"{% endif %}>
-                <a href="#">Report</a></li>
+              <li{% if name == "observations-report" %} class="active"{% endif %}>
+                  <a href="{% url "observations-report" %}">Report</a></li>
               <li class="nav-header">Meta</li>
               <li{% if request.resolver_match.namespace == "blog" %} class="active"{% endif %}>
               <a href="{% url "blog:entry-list" %}">News</a></li>

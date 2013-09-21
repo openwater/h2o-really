@@ -31,6 +31,10 @@
     <div class="span4">
         <form id="map-filter">
             <p>
+                <label for="postcode">Postcode:</label>
+                <input type="text" id="id_postcode" name="postcode" placeholder="SW1A 1AA" />
+            </p>
+            <p>
                 <label for="page_size">Maximum number of results:</label>
                 <input type="text" id="id_page_size" name="page_size" value="5000" />
             </p>
@@ -47,7 +51,8 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
-    var API_ROOT = '{% url "observations_api_measurements" %}';
+    var API_MEASUREMENTS_URL = '{% url "observations_api_measurements" %}';
+    var API_GEOCODE_POSTCODE_URL = '{% url "geocode_postcode" %}';
     var detailUrl = '{% url "observations-detail" pk="000" %}';
 
     function onEachFeature(feature, layer) {
@@ -69,12 +74,20 @@
                 maxZoom: 18
             }
         ).addTo(map);
+        
+        var repositionMapOnPostcode = function() {
+            var postcode = $("#id_postcode").val();
+            $.getJSON(API_GEOCODE_POSTCODE_URL + "/" + postcode, function(data) {
+                map.setView([data.lat, data.lon], 13);
+            });
+        };
 
         var updateMap = function() {
             $('#meta').html('Loading...');
             $('#updateBtn').attr('disabled', 'disabled');
             markers.clearLayers();
-            $.getJSON(API_ROOT + '?' + $('#map-filter').serialize(), function(data) {
+            repositionMapOnPostcode();
+            $.getJSON(API_MEASUREMENTS_URL + '?' + $('#map-filter').serialize(), function(data) {
                 var geoJsonLayer = L.geoJson(data.results, {
                     onEachFeature: onEachFeature
                 });

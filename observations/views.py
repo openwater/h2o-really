@@ -34,6 +34,10 @@ class MeasurementView(DetailView):
         return context
 
 
+class ReportView(TemplateView):
+    template_name = 'report.html'
+
+
 class DownloadView(View):
 
     def _write_response(self, queryset, params, shp=None, csv_writer=None):

@@ -22,6 +22,8 @@ urlpatterns = patterns(
 
     url(r'^api/v1/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/v1/observations/', include('observations.api.urls')),
+    url(r'^api/v1/geocode_postcode$', 'observations.api.views.geocode_postcode', name="geocode_postcode"),
+    url(r'^api/v1/geocode_postcode/(?P<postcode>[a-zA-Z0-9 +]+)$', 'observations.api.views.geocode_postcode', name="geocode_postcode"),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
