@@ -34,7 +34,7 @@ class MeasurementList(generics.ListAPIView):
             )
             if result.status_code == 200:
                 return HttpResponse(
-                    result.content, mimetype='application/json')
+                    result.content, content_type='application/json')
         except Exception, e:
             pass
         return super(MeasurementList, self).get(request, *args, **kwargs)
@@ -44,4 +44,4 @@ def geocode_postcode(request, *args, **kwargs):
     postcode = kwargs.get("postcode")
     latlon = mapit.geocode_postcode(postcode)
     print latlon
-    return HttpResponse(json.dumps(latlon), mimetype='application/json')
+    return HttpResponse(json.dumps(latlon), content_type='application/json')
