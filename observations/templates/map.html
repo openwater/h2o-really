@@ -107,6 +107,8 @@
                     msg += ' (showing the most recent ' + data.results.length + ')';
                 }
 
+                $('#downloadBtn').data('count', data.results.length);
+
                 $('#meta').html(msg + '.');
                 $('#updateBtn').removeAttr("disabled");
             });
@@ -114,15 +116,22 @@
 
         $('#map-filter').submit(function(e) {
             e.preventDefault();
+            $('#downloadCSV').hide();
+            $('#downloadSHP').hide();
+            $('#downloadBtn').show();
             updateMap();
         });
 
         updateMap();
 
         $('#downloadBtn').click(function() {
-            $('#downloadBtn').hide();
-            $('#downloadCSV').show();
-            $('#downloadSHP').show();
+            if ($('#downloadBtn').data('count') > 5000) {
+                alert('Too many results! Please filter results up to 5000.');
+            } else {
+                $('#downloadBtn').hide();
+                $('#downloadCSV').show();
+                $('#downloadSHP').show();
+            }
         });
         $('#downloadCSV').click(
             function() {
