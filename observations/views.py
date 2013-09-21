@@ -6,6 +6,8 @@ from django.views.generic import CreateView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from shapes.views import ShpResponder
+
 from .models import Measurement, Parameter, TestValue
 from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm, TestValueForm
 from .filters import MeasurementFilter
@@ -19,6 +21,16 @@ class MeasurementView(DetailView):
         context = super(MeasurementView, self).get_context_data(**kwargs)
         context.update(API_KEY=settings.CLOUDMADE_API_KEY)
         return context
+
+
+class DownloadView(View):
+
+    def get(self, request, *args, **kwargs):
+        f = MeasurementFilter(
+            self.request.GET,
+            queryset=Measurement.observations_manager.all(),
+        )
+        return ShpResponder(f.qs, exclude=('email',))()
 
 
 class MapView(TemplateView):

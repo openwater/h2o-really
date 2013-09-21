@@ -1,6 +1,6 @@
 https://github.com/django/django/archive/stable/1.6.x.zip#egg=django
+
 South==0.8.2
--e git+https://github.com/fission6/django-hstore.git@54edcf9f6d293ca0a6e1480b488fab6e94952cfb#egg=django_hstore-dev
 gunicorn==17.5
 ipython==1.0.0
 psutil==1.0.1
@@ -8,14 +8,18 @@ psycopg2==2.5.1
 wsgiref==0.1.2
 osgb==0.2dev
 djangorestframework==2.3.7
--e git+https://github.com/dmeehan/django-rest-framework-gis.git@9ade355885f3cff07557749a5cf8ea5df90c9280#egg=django-rest-framework-gis
 django-filter==0.7
 django-crispy-forms==1.3.2
 django-floppyforms==1.1
 django-datetime-widget==0.6
-https://github.com/makinacorpus/django-leaflet/archive/master.zip
 requests==1.2.3
--e git+https://bitbucket.org/semente/django-diario.git@593a15b121d696d0c041f7c95d9cbab9e90ffbe4#egg=diario
 Pillow==2.1.0
 django-markdown-deux==1.0.4
+
+https://github.com/makinacorpus/django-leaflet/archive/master.zip
 https://github.com/theatlantic/django-chosen/archive/3308dbffdfcc24afd63fb4a8495c9c60ccceec8d.zip#egg=chosen
+https://bitbucket.org/jimr/django-shapes/get/45ae08527182.zip#egg=shapes
+
+-e git+https://github.com/fission6/django-hstore.git@54edcf9f6d293ca0a6e1480b488fab6e94952cfb#egg=django_hstore-dev
+-e git+https://bitbucket.org/semente/django-diario.git@593a15b121d696d0c041f7c95d9cbab9e90ffbe4#egg=diario
+-e git+https://github.com/dmeehan/django-rest-framework-gis.git@9ade355885f3cff07557749a5cf8ea5df90c9280#egg=django-rest-framework-gis

@@ -36,6 +36,7 @@
             </p>
             {{ filter.form.as_p }}
             <input type="submit" class="button btn btn-primary" id="updateBtn" value="Update" /> 
+            <input type="button" class="button btn btn-primary" id="downloadBtn" value="Download" /> 
         </form>
         <div class="well">
             <span id="meta" class="muted"></span>
@@ -115,6 +116,25 @@
         });
 
         updateMap();
+
+        $('#downloadBtn').click(
+            function() {
+                var data = $('#map-filter').serialize();
+                location = "{% url "observations-download" %}?" + data;
+//                $.ajax(
+//                    "{% url "observations-download" %}",
+//                    {
+//                        data: data,
+//                        success: function(data) {
+//                            debugger;
+//                        },
+//                        error: function() {
+//                        }
+//                    }
+//                );
+            }
+        );
     });
+
 </script>
 {% endblock %}
