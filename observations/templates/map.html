@@ -36,7 +36,9 @@
             </p>
             {{ filter.form.as_p }}
             <input type="submit" class="button btn btn-primary" id="updateBtn" value="Update" /> 
-            <input type="button" class="button btn btn-primary" id="downloadBtn" value="Download" /> 
+            <input type="button" class="button btn btn-info" id="downloadBtn" value="Download" />
+            <input type="button" class="hide button btn btn-info" id="downloadCSV" value="CSV" />
+            <input type="button" class="hide button btn btn-info" id="downloadSHP" value="SHP" />
         </form>
         <div class="well">
             <span id="meta" class="muted"></span>
@@ -117,10 +119,27 @@
 
         updateMap();
 
-        $('#downloadBtn').click(
+        $('#downloadBtn').click(function() {
+            $('#downloadBtn').hide();
+            $('#downloadCSV').show();
+            $('#downloadSHP').show();
+        });
+        $('#downloadCSV').click(
             function() {
                 var data = $('#map-filter').serialize();
-                location = "{% url "observations-download" %}?" + data;
+                location = "{% url "observations-download" %}?format=csv&" + data;
+                $('#downloadCSV').hide();
+                $('#downloadSHP').hide();
+                $('#downloadBtn').show();
+            }
+        );
+        $('#downloadSHP').click(
+            function() {
+                var data = $('#map-filter').serialize();
+                location = "{% url "observations-download" %}?format=shp&" + data;
+                $('#downloadCSV').hide();
+                $('#downloadSHP').hide();
+                $('#downloadBtn').show();
             }
         );
     });
