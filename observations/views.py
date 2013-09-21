@@ -21,6 +21,10 @@ class MeasurementView(DetailView):
         return context
 
 
+class ReportView(TemplateView):
+    template_name = 'report.html'
+
+
 class MapView(TemplateView):
     template_name = 'map.html'
 
