@@ -21,6 +21,6 @@ Unidecode==0.04.14
 https://github.com/makinacorpus/django-leaflet/archive/master.zip
 https://github.com/theatlantic/django-chosen/archive/3308dbffdfcc24afd63fb4a8495c9c60ccceec8d.zip#egg=chosen
 
--e git+https://github.com/fission6/django-hstore.git@54edcf9f6d293ca0a6e1480b488fab6e94952cfb#egg=django_hstore-dev
+-e git+https://github.com/davea/django-hstore.git#egg=django_hstore-dev
 -e git+https://bitbucket.org/semente/django-diario.git@593a15b121d696d0c041f7c95d9cbab9e90ffbe4#egg=diario
 -e git+https://github.com/dmeehan/django-rest-framework-gis.git@9ade355885f3cff07557749a5cf8ea5df90c9280#egg=django-rest-framework-gis
