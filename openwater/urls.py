@@ -5,7 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 from .views import HomePageView
-# from observations.api.views import geocode_postcode
 
 
 urlpatterns = patterns(
