@@ -151,7 +151,10 @@ class DownloadView(View):
         return {
             'csv': self.csv_response,
             'shp': self.shp_zip_response,
-        }[request.GET.get('format', 'csv')](f.qs, f.data.get('parameter', []))
+        }[request.GET.get('format', 'csv')](
+            f.qs[:int(f.data.get('limit', '5000'))],
+            f.data.get('parameter', [])
+        )
 
 
 class MapView(TemplateView):
