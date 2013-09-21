@@ -1,13 +1,22 @@
+import os
+import urllib
 import json
+import tempfile
+import zipfile
+import shutil
+
+from StringIO import StringIO
 
 from django.conf import settings
 from django.views.generic.base import TemplateView, View
 from django.views.generic import CreateView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.db.models import Count
 
-from shapes.views import ShpResponder
+#from shapes.views import ShpResponder
+import shapefile
+
+from unidecode import unidecode
 
 from .models import Measurement, Parameter, TestValue
 from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm, TestValueForm
@@ -26,13 +35,77 @@ class MeasurementView(DetailView):
 
 class DownloadView(View):
 
+    def shp_zip_response(self, queryset, params):
+        """Render a shapefile(s), and zip it up, send it back in Response."""
+        mimetype = 'application/zip'
+        shp = shapefile.Writer(shapefile.POINT)
+
+        shp.field('DT_created', 'C', '32')
+        shp.field('DT_reference', 'C', '32')
+        shp.field('location_name', 'C', '200')
+        shp.field('parameter', 'C', '100')
+        shp.field('value', 'C', '100')
+        shp.field('test', 'C', '100')
+
+        for obj in queryset.defer('observations').select_related('parameters'):
+            testvalues = obj.testvalue_set
+            if params:  # we only want the params we asked for
+                # TODO: I don't really like this.
+                testvalues = testvalues.filter(test__parameter__id__in=params)
+            else:
+                testvalues = testvalues.all()
+            for testvalue in testvalues:
+                shp.point(obj.location.x, obj.location.y)
+                shp.record(
+                    obj.created_timestamp,
+                    obj.reference_timestamp,
+                    unidecode(obj.location_reference),
+                    testvalue.test.parameter.name,
+                    testvalue.value,
+                    str(testvalue.test)
+                )
+
+        tmp = tempfile.mkdtemp()
+        name = 'observations'
+        path = os.path.join(tmp, name)
+        shp.save(path)
+        prj = urllib.urlopen(
+            "http://spatialreference.org/ref/epsg/{0}/prettywkt/".format(
+                '4326'))
+        prj_fp = open(".".join((os.path.join(tmp, name), 'prj')), 'w')
+        prj_fp.write(prj.read())
+        prj_fp.close()
+
+        # make the zip
+        buffer = StringIO()
+        zip = zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED)
+        files = ['shp', 'shx', 'prj', 'dbf']
+        for item in files:
+            filename = '{0}.{1}'.format(path, item)
+            if os.path.exists(filename):
+                zip.write(filename, arcname='{0}.{1}'.format(name, item))
+        zip.close()
+        buffer.flush()
+        zip_stream = buffer.getvalue()
+        buffer.close()
+
+        # make the response
+        response = HttpResponse()
+        response['Content-Disposition'] = 'attachment; filename={0}.zip'.format(
+            name)
+        response['Content-length'] = str(len(zip_stream))
+        response['Content-Type'] = mimetype
+        response.write(zip_stream)
+
+        shutil.rmtree(tmp)
+        return response
+
     def get(self, request, *args, **kwargs):
         f = MeasurementFilter(
             self.request.GET,
             queryset=Measurement.observations_manager.all(),
         )
-        queryset = f.qs.annotate(n_params=Count('parameters'))
-        return ShpResponder(queryset, exclude=('observer', 'observations'))()
+        return self.shp_zip_response(f.qs, f.data.get('parameter', []))
 
 
 class MapView(TemplateView):
