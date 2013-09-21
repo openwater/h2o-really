@@ -121,17 +121,6 @@
             function() {
                 var data = $('#map-filter').serialize();
                 location = "{% url "observations-download" %}?" + data;
-//                $.ajax(
-//                    "{% url "observations-download" %}",
-//                    {
-//                        data: data,
-//                        success: function(data) {
-//                            debugger;
-//                        },
-//                        error: function() {
-//                        }
-//                    }
-//                );
             }
         );
     });

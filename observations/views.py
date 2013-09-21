@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic import CreateView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Count
 
 from shapes.views import ShpResponder
 
@@ -30,7 +31,8 @@ class DownloadView(View):
             self.request.GET,
             queryset=Measurement.observations_manager.all(),
         )
-        return ShpResponder(f.qs, exclude=('email',))()
+        queryset = f.qs.annotate(n_params=Count('parameters'))
+        return ShpResponder(queryset, exclude=('observer', 'observations'))()
 
 
 class MapView(TemplateView):
