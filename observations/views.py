@@ -5,6 +5,9 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic import CreateView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Count
+
+from shapes.views import ShpResponder
 
 from .models import Measurement, Parameter, TestValue
 from .forms import MeasurementsForm, ParamRowForm, SelectOrCreateTestForm, TestValueForm
@@ -23,6 +26,17 @@ class MeasurementView(DetailView):
 
 class ReportView(TemplateView):
     template_name = 'report.html'
+
+
+class DownloadView(View):
+
+    def get(self, request, *args, **kwargs):
+        f = MeasurementFilter(
+            self.request.GET,
+            queryset=Measurement.observations_manager.all(),
+        )
+        queryset = f.qs.annotate(n_params=Count('parameters'))
+        return ShpResponder(queryset, exclude=('observer', 'observations'))()
 
 
 class MapView(TemplateView):

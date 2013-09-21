@@ -49,12 +49,7 @@ If you want to help out:
 Load initial data
 -----------------
 
-With your server running, go to the admin site and add a License with the following information:
-* name: OGL
-* URL: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/2/
-* version: 2
-
-With that added, you can run a script to load the initial data sets, eg:
+Use the `load_gqahi_nutrients` management command to load the initial data sets, e.g.:
 
     ./manage.py load_gqahi_nutrients data/GQAHI_Nutrients/nitrate\ GQA\ grades\ 2009\ \(Wales\).csv --nutrient N
 
