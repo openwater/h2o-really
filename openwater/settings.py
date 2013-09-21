@@ -160,6 +160,7 @@ INSTALLED_APPS = (
 
     'supplements',
     'observations',
+    'utils',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -203,6 +204,8 @@ REST_FRAMEWORK = {
 # Override this in your local settings
 CLOUDMADE_API_KEY = ''
 
+
+MAPIT_URL = 'http://mapit.mysociety.org/'
 
 def post_import(*args, **kwargs):
     """Override this in your local_settings.py"""

@@ -1,14 +1,17 @@
 import requests
+import json
 
 from rest_framework import generics
 
 from django.conf import settings
+from django.http import HttpResponse
 
 from observations.filters import MeasurementFilter
 from observations.models import Measurement
 from observations.api.serializers import (
     CompactMeasurementSerializer, MeasurementSerializer,
 )
+from utils import mapit
 
 
 class MeasurementList(generics.ListAPIView):
@@ -35,3 +38,10 @@ class MeasurementList(generics.ListAPIView):
         except Exception, e:
             pass
         return super(MeasurementList, self).get(request, *args, **kwargs)
+
+
+def geocode_postcode(request, *args, **kwargs):
+    postcode = kwargs.get("postcode")
+    latlon = mapit.geocode_postcode(postcode)
+    print latlon
+    return HttpResponse(json.dumps(latlon), mimetype='application/json')
