@@ -20,7 +20,7 @@ DATABASES = {
         'ENGINE': 'django_hstore.backends.postgis', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'h2o_really',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'spike',
+        'USER': '',
 #        'PASSWORD': '',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
 #        'PORT': '',                      # Set to empty string for default.
@@ -202,6 +202,10 @@ REST_FRAMEWORK = {
 
 # Override this in your local settings
 CLOUDMADE_API_KEY = ''
+
+
+def post_import(*args, **kwargs):
+    """Override this in your local_settings.py"""
 
 try:
     from local_settings import *
