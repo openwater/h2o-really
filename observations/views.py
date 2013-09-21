@@ -1,4 +1,5 @@
 import os
+import csv
 import urllib
 import json
 import tempfile
@@ -35,6 +36,37 @@ class MeasurementView(DetailView):
 
 class DownloadView(View):
 
+    def _write_response(self, queryset, params, shp=None, csv_writer=None):
+        """Write CSV or SHP."""
+        for obj in queryset.defer('observations').select_related('parameters'):
+            testvalues = obj.testvalue_set
+            if params:  # we only want the params we asked for
+                # TODO: I don't really like this.
+                testvalues = testvalues.filter(test__parameter__id__in=params)
+            else:
+                testvalues = testvalues.all()
+            for testvalue in testvalues:
+                if shp:
+                    shp.point(obj.location.x, obj.location.y)
+                    shp.record(
+                        obj.created_timestamp,
+                        obj.reference_timestamp,
+                        unidecode(obj.location_reference),
+                        testvalue.test.parameter.name,
+                        testvalue.value,
+                        str(testvalue.test)
+                    )
+                if csv_writer:
+                    csv_writer.writerow([
+                        obj.location.x, obj.location.y,
+                        obj.created_timestamp,
+                        obj.reference_timestamp,
+                        unidecode(obj.location_reference),
+                        testvalue.test.parameter.name,
+                        testvalue.value,
+                        str(testvalue.test)]
+                    )
+
     def shp_zip_response(self, queryset, params):
         """Render a shapefile(s), and zip it up, send it back in Response."""
         mimetype = 'application/zip'
@@ -47,23 +79,7 @@ class DownloadView(View):
         shp.field('value', 'C', '100')
         shp.field('test', 'C', '100')
 
-        for obj in queryset.defer('observations').select_related('parameters'):
-            testvalues = obj.testvalue_set
-            if params:  # we only want the params we asked for
-                # TODO: I don't really like this.
-                testvalues = testvalues.filter(test__parameter__id__in=params)
-            else:
-                testvalues = testvalues.all()
-            for testvalue in testvalues:
-                shp.point(obj.location.x, obj.location.y)
-                shp.record(
-                    obj.created_timestamp,
-                    obj.reference_timestamp,
-                    unidecode(obj.location_reference),
-                    testvalue.test.parameter.name,
-                    testvalue.value,
-                    str(testvalue.test)
-                )
+        self._write_response(queryset, params, shp=shp)
 
         tmp = tempfile.mkdtemp()
         name = 'observations'
@@ -100,12 +116,38 @@ class DownloadView(View):
         shutil.rmtree(tmp)
         return response
 
+    def csv_response(self, queryset, params):
+        """Return a CSV response."""
+        name = 'observations'
+        mimetype = 'text/csv'
+        response = HttpResponse()
+        response['Content-Disposition'] = 'attachment; filename={0}.csv'.format(
+            name)
+        response['Content-Type'] = mimetype
+        csv_writer = csv.writer(response)
+        csv_writer.writerow([
+            'longitude',
+            'latitude',
+            'datetime_created',
+            'datetime_reference',
+            'location_name',
+            'parameter',
+            'value',
+            'test',
+        ])
+
+        self._write_response(queryset, params, csv_writer=csv_writer)
+        return response
+
     def get(self, request, *args, **kwargs):
         f = MeasurementFilter(
             self.request.GET,
             queryset=Measurement.observations_manager.all(),
         )
-        return self.shp_zip_response(f.qs, f.data.get('parameter', []))
+        return {
+            'csv': self.csv_response,
+            'shp': self.shp_zip_response,
+        }[request.GET.get('format', 'csv')](f.qs, f.data.get('parameter', []))
 
 
 class MapView(TemplateView):
