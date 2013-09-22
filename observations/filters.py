@@ -21,6 +21,7 @@ class MeasurementFilter(django_filters.FilterSet):
                 'todayHighlight': 'true',
                 'minView': 2,
                 'startView': 3,
+                'pickerPosition': 'bottom-left',
             })
     )
     to_date = django_filters.DateTimeFilter(
@@ -36,6 +37,7 @@ class MeasurementFilter(django_filters.FilterSet):
                 'todayHighlight': 'true',
                 'minView': 2,
                 'startView': 3,
+                'pickerPosition': 'bottom-left',
             })
     )
     parameter = django_filters.ModelMultipleChoiceFilter(
