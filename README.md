@@ -14,7 +14,7 @@ If you want to help out:
 
 * Check out this repo
 * Make a virtualenv (e.g. `mkvirtualenv h2o_really`)
-* `pip install requirements.txt`
+* `pip install -r requirements.txt`
 * Set up PostGIS with hstore
 
   Outside your virtual environment, if you haven't ever installed GDAL before:
@@ -29,11 +29,11 @@ If you want to help out:
   enable the spatial element:
 
         createdb -h localhost h2o_really && psql -h localhost h2o_really
-        h2o_really=# CREATE EXTENSION postgis;
   
-  Then you need the hstore extension:
+  Then you need the hstore and postgis extensions:
 
         h2o_really=# CREATE EXTENSION hstore;
+        h2o_really=# CREATE EXTENSION postgis;
   
   In theory, that’s it...
 
@@ -41,8 +41,15 @@ If you want to help out:
   sockets approach, rather it binds to 0.0.0.0 (or 127.0.0.1 by default I
   think) on port 5432. If you’re using linux then probably you don’t need that
   bit.
+  
+  Get out of the Postgres shell (Ctrl+D) and then:
+  
 * `./manage.py syncdb`
 * `./manage.py migrate`
+* `./manage.py runserver 127.0.0.1:8080`
+
+* Browse to http://127.0.0.1:8080 in a browser!
+  
 * Add/fix/commit stuff on a branch
 * Submit a pull request
 
