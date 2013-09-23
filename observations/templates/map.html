@@ -59,7 +59,19 @@
 
     function onEachFeature(feature, layer) {
         layer.on('click', function (e) {
-            location = detailUrl.replace('000', feature.properties.id);
+            layer.bindPopup(
+                '<div id="popup' + feature.properties.id + '">Loading...</div>');
+            $.ajax(
+                "{% url "observations-detail-popup" 0 %}".replace('0', feature.properties.id),
+                {
+                    success: function(data) {
+                        e.layer.closePopup();  // close/reopen to force resize
+                        e.layer.bindPopup(
+                            '<div id="popup' + feature.properties.id + '">' + data + '</div>');
+                        e.layer.openPopup();
+                    }
+                }
+            )
         });
     }
 
