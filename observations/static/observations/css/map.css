@@ -26,3 +26,12 @@
     background-color: rgba(117, 107, 177, 0.8);
     color: #fff;
 }
+
+
+.hero-unit.shrunken {
+    padding: 20px;
+}
+
+.hero-unit.shrunken h1 {
+    margin: 0;
+}

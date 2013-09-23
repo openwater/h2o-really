@@ -6,7 +6,7 @@
 <style type="text/css">
   html { height: 100%; }
   body { height: 100%; }
-  #map-canvas { height: 600px; width: 100%; }
+  #map-canvas { height: 900px; width: 100%; }
 </style>
 <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.css' %}" />
 <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.css' %}" />
@@ -21,14 +21,16 @@
 <script type="text/javascript" src="{% static 'leaflet-0.6.4/plugins/leaflet.markercluster.js' %}"></script>
 {{ filter.form.media }}
 {% endblock %}
-{% block header %}
-    <h1>Map & Download</h1>
+{% block hero %}
+    <div class="hero-unit shrunken">
+        <h1>Map &amp; Download</h1>
+    </div>
 {% endblock %}
 {% block content %}
-    <div class="span8">
+    <div class="span9">
         <div id="map-canvas"></div>
     </div>
-    <div class="span4">
+    <div class="span3">
         <form id="map-filter">
             <p>
                 <label for="postcode">Postcode:</label>
