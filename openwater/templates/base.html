@@ -68,7 +68,7 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
+        <div class="span2">
           <div class="well sidebar-nav">
             {% with request.resolver_match.url_name as name %}
             <ul class="nav nav-list">
@@ -99,7 +99,7 @@
 {% endwith %}
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="span9">
+        <div class="span10">
           {% block hero %}
           <div class="hero-unit">
             <h1>{% block header %}{% endblock %}</h1>
