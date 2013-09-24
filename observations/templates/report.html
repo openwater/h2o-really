@@ -3,12 +3,35 @@
 {% block title %}Report{% endblock %}
 
 {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.css' %}" />
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.css' %}" />
+    <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.Default.css' %}" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="{% static 'leaflet-0.6.4/leaflet.ie.css' %}" />
+        <link rel="stylesheet" href="{% static 'leaflet-0.6.4/plugins/MarkerCluster.Default.ie.css' %}" />
+    <![endif]-->
+
+    <link rel="stylesheet" href="{% static 'observations/css/report.css' %}" />
 {% endblock %}
-{% block header %}
-    <h1>Report</h1>
+
+{% block js %}
+    <script type="text/javascript" src="{% static 'leaflet-0.6.4/leaflet.js' %}"></script>
+    <script type="text/javascript" src="{% static 'leaflet-0.6.4/plugins/leaflet.markercluster.js' %}"></script>
+    <script type="text/javascript" src="{% static 'observations/js/report.js' %}"></script>
+    <script type="text/javascript">
+        var CLOUDMADE_API_KEY = '{{ settings.CLOUDMADE_API_KEY }}';
+        var GEOCODE_URL = '{% url 'geocode_postcode' %}';
+    </script>
 {% endblock %}
+
+{% block hero %}
+{% endblock %}
+
 {% block content %}
-<div class="span12">
-    <p>Want to download water quality data for your local area?</p>
-</div>
+    <div id=postcodecontrols>
+        <label for=postcode>Postcode:</label>
+        <input type=text id=postcode placeholder="SW1A 1AA"></input>
+        <button class=btn id=updatemap>Go</button>
+    </div>
+    <div id="map"></div>
 {% endblock %}

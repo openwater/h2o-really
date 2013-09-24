@@ -1,0 +1,17 @@
+#map {
+    width: 100%;
+    height: 800px;
+}
+
+
+#postcodecontrols {
+    padding: 8px;
+}
+
+#postcodecontrols label {
+    display: inline;
+}
+
+#postcodecontrols input {
+    margin-bottom: 0;
+}
