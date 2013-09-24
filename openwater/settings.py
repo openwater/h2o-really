@@ -133,7 +133,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "openwater.context_processors.site",
-    "openwater.context_processors.settings",
+    "openwater.context_processors.settings_passthrough",
 ]
 
 INSTALLED_APPS = (

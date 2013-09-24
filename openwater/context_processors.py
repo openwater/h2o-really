@@ -10,7 +10,7 @@ def site(request):
         'site': current_site
     }
 
-def settings(request):
+def settings_passthrough(request):
     return {
         'settings': {
             'CLOUDMADE_API_KEY': settings.CLOUDMADE_API_KEY,
