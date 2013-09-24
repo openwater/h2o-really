@@ -31,7 +31,7 @@
         $('#id_location_reference').bind('keyup', function(){
             var val = $(this).val();
             if (val.length < 3) return;
-            var url = "http://beta.geocoding.cloudmade.com/v3/{{ API_KEY }}/api/geo.location.search.2";
+            var url = "http://beta.geocoding.cloudmade.com/v3/{{ settings.CLOUDMADE_API_KEY }}/api/geo.location.search.2";
             var bbox = map.getBounds().toBBoxString().split(',');
             bbox = bbox[0] + ',' + bbox[1] + ';' + bbox[2] + ',' + bbox[3];
             var data = {
