@@ -41,7 +41,11 @@ class MeasurementList(generics.ListAPIView):
 
 
 def geocode_postcode(request, *args, **kwargs):
-    postcode = kwargs.get("postcode")
-    latlon = mapit.geocode_postcode(postcode)
-    print latlon
-    return HttpResponse(json.dumps(latlon), content_type='application/json')
+    postcode = request.GET.get("postcode")
+    full = True if request.GET.get('full', "").lower() == "true" else False
+    if full:
+        content = mapit.lookup_postcode(postcode)
+    else:
+        content = mapit.geocode_postcode(postcode)
+    
+    return HttpResponse(json.dumps(content), content_type='application/json')
