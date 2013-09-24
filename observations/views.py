@@ -28,10 +28,6 @@ class MeasurementView(DetailView):
     template_name = 'observation.html'
     model = Measurement
 
-    def get_context_data(self, **kwargs):
-        context = super(MeasurementView, self).get_context_data(**kwargs)
-        context.update(API_KEY=settings.CLOUDMADE_API_KEY)
-        return context
 
 class MeasurementPopupView(MeasurementView):
     template_name = 'observation-popup.html'
@@ -39,6 +35,7 @@ class MeasurementPopupView(MeasurementView):
 
 class ReportView(TemplateView):
     template_name = 'report.html'
+
 
 
 class DownloadView(View):
@@ -165,7 +162,6 @@ class MapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MapView, self).get_context_data(**kwargs)
-        context.update(API_KEY=settings.CLOUDMADE_API_KEY)
         f = MeasurementFilter(
             self.request.GET,
             queryset=Measurement.observations_manager.all(),
@@ -177,11 +173,6 @@ class MapView(TemplateView):
 class AddView(CreateView):
     form_class = MeasurementsForm
     template_name = 'observations.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AddView, self).get_context_data(**kwargs)
-        context.update(API_KEY=settings.CLOUDMADE_API_KEY)
-        return context
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
