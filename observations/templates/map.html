@@ -91,8 +91,11 @@
         ).addTo(map);
         
         var repositionMapOnPostcode = function() {
-            var postcode = $("#id_postcode").val();
-            $.getJSON(API_GEOCODE_POSTCODE_URL + "/" + postcode, function(data) {
+            var postcode = $.trim($("#id_postcode").val());
+            if (postcode.length == 0) {
+                return;
+            }
+            $.getJSON(API_GEOCODE_POSTCODE_URL, {postcode: postcode}, function(data) {
                 map.setView([data.lat, data.lon], 13);
             });
         };
