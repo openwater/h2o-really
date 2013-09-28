@@ -1,0 +1,21 @@
+{% load observation_tags %}
+<table id="added-test-values" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Unit</th>
+            <th>Test</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for testvalue in object.testvalue_set.all %}
+            <tr>
+                <td>{{ testvalue.test.parameter.name }}</td>
+                <td>{{ testvalue|get_value }}</td>
+                <td>{{ testvalue.test.unit }}</td>
+                <td>{{ testvalue.test }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
