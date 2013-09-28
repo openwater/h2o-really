@@ -117,6 +117,15 @@ class Measurement(models.Model):
         return ", ".join([
             test.parameter.name for test in self.parameters.all()])
 
+    def get_timestamp(self):
+        """Return the most useful timestamp."""
+        return self.reference_timestamp or self.created_timestamp
+
+    def get_location(self):
+        """Return a nice location name."""
+        return self.location_reference or "{0:0.2f}, {1:0.2f}".format(
+            self.location.x, self.location.y)
+
 
 class TestValue(models.Model):
     """A Test, as measured during a Measurement, resulting in a Value."""

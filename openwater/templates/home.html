@@ -66,6 +66,16 @@
         </div>
     </div><!--/span-->
     <div class="span4">
+        <div class="well">
+            <h4>Latest measurements</h4>
+            <ul>
+            {% for m in measurement_list %}
+            <li><a href="{% url "observations-detail" m.id %}">
+                {{ m.get_timestamp|date }} &mdash; {{ m.get_location }}</a>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
         <a class="twitter-timeline" href="https://twitter.com/H2OReally" data-widget-id="379269796728025088">Tweets</a>
         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
