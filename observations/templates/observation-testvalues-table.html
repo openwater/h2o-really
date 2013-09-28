@@ -14,7 +14,7 @@
                 <td>{{ testvalue.test.parameter.name }}</td>
                 <td>{{ testvalue|get_value }}</td>
                 <td>{{ testvalue.test.unit }}</td>
-                <td>{{ testvalue.test }}</td>
+                <td><a href="{% url "observations-test-detail" testvalue.test.id %}">{{ testvalue.test }}</a></td>
             </tr>
         {% endfor %}
     </tbody>
