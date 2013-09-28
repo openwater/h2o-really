@@ -1,3 +1,4 @@
+{% load observation_tags %}
 <h3>
     {% if object.location_reference %}{{ object.location_reference }},{% endif %}
     {{ object.reference_timestamp|default:object.created_timestamp }}
@@ -18,7 +19,7 @@
         {% for testvalue in object.testvalue_set.all %}
             <tr>
                 <td>{{ testvalue.test.parameter.name }}</td>
-                <td>{{ testvalue.value }}</td>
+                <td>{{ testvalue|get_value }}</td>
                 <td>{{ testvalue.test.unit }}</td>
                 <td>{{ testvalue.test }}</td>
             </tr>

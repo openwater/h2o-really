@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.gis.db import models
 from django_hstore import hstore
 
@@ -54,6 +56,25 @@ class Test(models.Model):
 
     def __unicode__(self):
         return u"{0} ({1})".format(self.name, self.vendor_or_authority)
+
+    def get_value(self, value):
+        """Return the correct value from meta given the TestValue value.
+
+        Depends on the type of this test - if it is category it will do some
+        lookup, otherwise it's pretty much just a passthrough.
+
+        """
+        if self.test_type == 'CATEGORY':
+            category = json.loads(self.meta[value])
+            result = []
+            if 'min' in category:
+                result.append("from {0}".format(category['min']))
+            if 'max' in category:
+                result.append("up to {0}".format(category['max']))
+            return " ".join(result)
+        else:  # maybe something more clever below...
+            return value
+
 
 
 class Measurement(models.Model):
