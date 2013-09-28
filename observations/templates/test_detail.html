@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Tests{% endblock %}
+{% block header %}
+    <h2>
+        Test
+    </h2>
+    <h3>{{ test }}</h3>
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="span6">
+            <dl>
+                <dt>Measures</dt>
+                <dd>{{ test.parameter }}</dd>
+                <dt>Unit</dt>
+                <dd>{{ test.unit }}</dd>
+            </dl>
+        </div>
+        <div class="span6">
+            <dl>
+                <dt>Test vendor/authority</dt>
+                <dd>{{ test.vendor_or_authority }}</dd>
+                <dt>Test type</dt>
+                <dd>{{ test.get_test_type_display }}</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <h4>Additional info</h4>
+            <div class="well">
+                <dl>
+                {% for key, value in test.meta.items %}
+                <dt>{{ key }}</dt>
+                <dd>{{ value }}</dd>
+                {% endfor %}
+                </dl>
+            </div>
+        </div>
+        <div class="span6">
+            <h4>Stats</h4>
+            <div class="well">
+                <dl>
+                {% for key, value in test.get_stats.items %}
+                <dt>{{ key|title }}</dt>
+                <dd>{{ value }}</dd>
+                {% endfor %}
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

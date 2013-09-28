@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Tests{% endblock %}
+{% block header %}
+    <h2>
+        Tests
+    </h2>
+    <h3>How are measurements made?</h3>
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <p>Tests are what you use to get measurements of quality. Some tests
+        are really rigorous and give very high-accuracy values, others can
+        simply tell you if a chemical is present or not above a certain level.
+        Check below to find a test for some quality parameter.</p>
+    </div>
+    <div class="row-fluid">
+        <div class="span6">
+            <h4>Tests for&hellip;</h4>
+            {% regroup object_list by parameter as param_list %}
+            <ul>
+            {% for param in param_list %}
+            <li><a href="#test{{ param.grouper.id }}">{{ param.grouper }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="span6">
+            {% for param in param_list %}
+            <div id="test{{ param.grouper.id }}" data-param="{{ param.grouper.id }}">
+                <h3>{{ param.grouper }}</h3>
+                <ul>
+                    {% for test in param.list %}
+                    <li><a href="{% url "observations-test-detail" test.id %}">
+                        {{ test }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

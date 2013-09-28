@@ -33,6 +33,7 @@ class MeasurementView(DetailView):
         context.update(API_KEY=settings.CLOUDMADE_API_KEY)
         return context
 
+
 class MeasurementPopupView(MeasurementView):
     template_name = 'observation-popup.html'
 

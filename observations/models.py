@@ -1,5 +1,7 @@
 import json
 
+from collections import Counter
+
 from django.contrib.gis.db import models
 from django_hstore import hstore
 
@@ -75,6 +77,18 @@ class Test(models.Model):
         else:  # maybe something more clever below...
             return value
 
+    def get_stats(self):
+        """Return some basics about this test, if possible."""
+        result = {}
+        values = self.testvalue_set.values_list('value', flat=True)
+        result['usage'] = "Used {0} times".format(len(values))
+        if self.test_type in ['CATEGORY', 'VALUE']:
+            values = map(float, values)
+            counter = Counter(values)
+            result['mode'] = "{0}, {1} times".format(*counter.most_common(1)[0])
+            result['mean'] = "{0:0.2f}".format(
+                sum(values) / float(len(values)))
+        return result
 
 
 class Measurement(models.Model):

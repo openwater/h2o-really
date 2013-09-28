@@ -54,8 +54,8 @@
                   <a href="{% url 'home' %}">Home</a></li>
               <li{% if name == "observations-add" %} class="active"{% endif %}>
                   <a href="{% url "observations-add" %}">Add measurements</a></li>
-              <li{% if name == "sample-kits" %} class="active"{% endif %}>
-              <a href="{% url "sample-kits" %}">Get testing kits</a></li>
+              <li{% if name == "observations-tests" %} class="active"{% endif %}>
+              <a href="{% url "observations-tests" %}">Find tests</a></li>
               {% if request.user.is_staff %}
               <li><a href="{% url 'admin:index' %}">Admin</a></li>
               {% endif %}
@@ -93,8 +93,8 @@
                   Data sources, attributions</a></li>
               <li{% if name == "how-to" %} class="active"{% endif %}>
                 <a href="#">How-to</a></li>
-              <li{% if name == "sample-kits" %} class="active"{% endif %}>
-              <a href="{% url "sample-kits" %}">Testing kits</a></li>
+              <li{% if name == "observations-tests" %} class="active"{% endif %}>
+              <a href="{% url "observations-tests" %}">Testing kits</a></li>
             </ul>
 {% endwith %}
           </div><!--/.well -->
